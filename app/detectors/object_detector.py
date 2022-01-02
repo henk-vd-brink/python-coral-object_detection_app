@@ -60,8 +60,8 @@ class ObjectDetector(BaseDetector):
                                 self._OUTPUT_NUMBER_NAME: sorted_output_indices[3],
                                 }
 
-        # self._input_size = input_detail['shape'][2], input_detail['shape'][1]
-        self._input_size = 300, 300
+        self._input_size = input_detail['shape'][2], input_detail['shape'][1]
+        # self._input_size = 300, 300
 
         self._is_quantized_input = input_detail['dtype'] == np.uint8
 
@@ -71,7 +71,7 @@ class ObjectDetector(BaseDetector):
 
     def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):    
         for i in range(count):
-            if scores[i] >= 0.65:
+            if scores[i] >= 0.5:
                 y_min, x_min, y_max, x_max = boxes[i]
                 bb_x_min = round(x_min * image_width)
                 bb_x_max = round(x_max * image_width)
@@ -80,8 +80,8 @@ class ObjectDetector(BaseDetector):
                 
                 class_id = int(classes[i]+1)
 
-                image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (255, 0, 0), 1)
-                image = cv2.putText(image, self._label_list[class_id], (bb_x_max, bb_y_min), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
+                image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 255, 0), 1)
+                image = cv2.putText(image, self._label_list[class_id], (bb_x_max, bb_y_min), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
         return image
 
 
