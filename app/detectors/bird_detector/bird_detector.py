@@ -10,8 +10,8 @@ from PIL import Image
 
 class BirdDetector(BaseDetector):
 
-    _model_file = "detectors/assets/models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite"
-    _label_file = "detectors/assets/labels/inat_bird_labels.txt"
+    _model_file = "app/detectors/assets/models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite"
+    _label_file = "app/detectors/assets/labels/inat_bird_labels.txt"
 
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)
