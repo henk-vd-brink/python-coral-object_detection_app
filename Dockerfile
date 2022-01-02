@@ -14,6 +14,7 @@ RUN apt-get install ffmpeg libsm6 libxext6 python3-opencv \
     libhdf5-dev libhdf5-serial-dev libhdf5-103 \
     libqtgui4 libqtwebkit4 libqt4-test python3-pyqt5 -y
 
+RUN apt-get update
 RUN apt-get install python3-pycoral
 
 WORKDIR /app
