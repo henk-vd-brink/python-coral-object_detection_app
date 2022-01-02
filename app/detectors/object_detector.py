@@ -21,28 +21,27 @@ class ObjectDetector(BaseDetector):
     _mean = 127.5
     _std = 127.5
 
-    _input_size = (480, 640)
-
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)
         self._interpreter.allocate_tensors()
+        
         input_detail = self._interpreter.get_input_details()[0]
 
         self._size = common.input_size(self._interpreter)
 
         sorted_output_indices = sorted(
-        [output['index'] for output in self._interpreter.get_output_details()])
+            [output['index'] for output in self._interpreter.get_output_details()])
 
         self._output_indices = {
-            self._OUTPUT_LOCATION_NAME: sorted_output_indices[0],
-            self._OUTPUT_CATEGORY_NAME: sorted_output_indices[1],
-            self._OUTPUT_SCORE_NAME: sorted_output_indices[2],
-            self._OUTPUT_NUMBER_NAME: sorted_output_indices[3],
-    }
+                                self._OUTPUT_LOCATION_NAME: sorted_output_indices[0],
+                                self._OUTPUT_CATEGORY_NAME: sorted_output_indices[1],
+                                self._OUTPUT_SCORE_NAME: sorted_output_indices[2],
+                                self._OUTPUT_NUMBER_NAME: sorted_output_indices[3],
+                                }
+
 
         self._input_size = input_detail['shape'][2], input_detail['shape'][1]
         self._is_quantized_input = input_detail['dtype'] == np.uint8
-
 
     def _preprocess(self, input_image):
         output_image = Image.fromarray(input_image).convert("RGB").resize(self._size, Image.ANTIALIAS)  
