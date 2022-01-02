@@ -68,7 +68,7 @@ class ObjectDetector(BaseDetector):
 
     def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):    
         for i in range(count):
-            if scores[i] >= 0.5:
+            if scores[i] >= 0.7:
                 y_min, x_min, y_max, x_max = boxes[i]
                 bb_x_min = round(x_min * image_width)
                 bb_x_max = round(x_max * image_width)
@@ -78,13 +78,10 @@ class ObjectDetector(BaseDetector):
                 class_id = int(classes[i])
                 print(self._label_list[class_id])
                 image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (255, 0, 0), 1)
-            
         return image
 
 
     def detect(self, image):
-        print("initial image size", image.shape)
-
         image_height, image_width, _ = image.shape
 
         input_tensor = self._preprocess(image) 
