@@ -11,7 +11,7 @@ from PIL import Image
 class ObjectDetector(BaseDetector):
 
     _model_file = "app/detectors/assets/models/ssd_mobilenet_v1_1_metadata_1.tflite"
-    _label_file = "app/detectors/assets/labels/inat_bird_labels.txt"
+    _label_file = "app/detectors/assets/labels/ssd_mobilenet_v1_1_metadata_1_labels.txt"
 
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)
@@ -25,10 +25,10 @@ class ObjectDetector(BaseDetector):
         self._interpreter.invoke()
         classes = classify.get_classes(self._interpreter, top_k=1)
         
-        # labels = dataset.read_label_file(self._label_file)
+        labels = dataset.read_label_file(self._label_file)
 
         for c in classes:
-            print(c.id, c.id, c.score)
+            print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
         return image
 
 
