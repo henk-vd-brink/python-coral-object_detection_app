@@ -70,8 +70,11 @@ class ObjectDetector(BaseDetector):
         for i in range(count):
             if scores[i] >= 0.5:
                 y_min, x_min, y_max, x_max = boxes[i]
-                print((x_min, y_min),(x_max, y_max) )
-                image = cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (255, 0, 0), 1)
+                bb_x_min = round(x_min * image_width)
+                bb_x_max = round(x_max * image_width)
+                bb_y_min = round(y_min * image_width)
+                bb_y_max = round(y_max * image_width)
+                image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (255, 0, 0), 1)
         return image
 
 
