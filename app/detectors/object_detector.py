@@ -50,15 +50,22 @@ class ObjectDetector(BaseDetector):
         self._set_input_tensor(input_tensor)
         self._interpreter.invoke()
 
+        boxes = self._get_output_tensor(self._OUTPUT_LOCATION_NAME)
+        classes = self._get_output_tensor(self._OUTPUT_CATEGORY_NAME)
+        scores = self._get_output_tensor(self._OUTPUT_SCORE_NAME)
+        count = int(self._get_output_tensor(self._OUTPUT_NUMBER_NAME))
 
-        common.set_input(self._interpreter, image)
-        classes = classify.get_classes(self._interpreter)
+        print(boxes)
+
+        # common.set_input(self._interpreter, image)
+        # classes = classify.get_classes(self._interpreter)
         
-        labels = dataset.read_label_file(self._label_file)
+        # labels = dataset.read_label_file(self._label_file)
 
-        for c in classes:
-            print(type(c))
-            print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
+        # for c in classes:
+        #     print(type(c))
+        #     print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
+        # return image
         return image
 
     def _set_input_tensor(self, image):
