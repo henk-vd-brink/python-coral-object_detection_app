@@ -66,24 +66,11 @@ class ObjectDetector(BaseDetector):
         output_image = Image.fromarray(input_image).convert("RGB").resize(self._input_size, Image.ANTIALIAS)  
         return output_image
 
-    def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):
-        results = []
-    
+    def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):    
         for i in range(count):
             if scores[i] >= 0.5:
                 y_min, x_min, y_max, x_max = boxes[i]
-                bounding_box = Rect(
-                        top=int(y_min * image_height),
-                        left=int(x_min * image_width),
-                        bottom=int(y_max * image_height),
-                        right=int(x_max * image_width))
-                class_id = int(classes[i])
-                category = Category(
-                                    score=scores[i],
-                                    label=self._label_list[class_id],  # 0 is reserved for background
-                                    index=class_id)
-                result = Detection(bounding_box=bounding_box, categories=[category])
-                results.append(result)
+                print((x_min, y_min),(x_max, y_max) )
                 image = cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (255, 0, 0), 1)
         return image
 
