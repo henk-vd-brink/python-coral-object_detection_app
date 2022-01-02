@@ -2,10 +2,10 @@
 import cv2, io
 from flask import Flask, render_template, Response
 
-from .detectors import ObjectDetector
+from .detectors import BirdDetector
 
 app = Flask(__name__)
-detector = ObjectDetector()
+detector = BirdDetector()
 
 @app.route("/")
 def index():
