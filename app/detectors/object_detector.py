@@ -45,9 +45,7 @@ class ObjectDetector(BaseDetector):
         self._interpreter.allocate_tensors()
 
         with open(self._label_file, "r") as label_file:
-            self._label_list = label_file.readlines()
-        print("label list", self._label_list)
-            
+            self._label_list = label_file.readlines()            
         
         input_detail = self._interpreter.get_input_details()[0]
         sorted_output_indices = sorted(
@@ -72,7 +70,7 @@ class ObjectDetector(BaseDetector):
         results = []
     
         for i in range(count):
-            if scores[i] >= 0.1:
+            if scores[i] >= 0.5:
                 y_min, x_min, y_max, x_max = boxes[i]
                 bounding_box = Rect(
                         top=int(y_min * image_height),
@@ -91,10 +89,12 @@ class ObjectDetector(BaseDetector):
                                     results,
                                     key=lambda detection: detection.categories[0].score,
                                     reverse=True)
-            print(sorted_results)
+            print("final image size", image.shape)
+            return cv2.rectange(image, (x_min, y_min), (x_max, y_max), color="#FFF", 1)
 
 
     def detect(self, image):
+        print("initial image size", image.shape)
 
         image_height, image_width, _ = image.shape
 
