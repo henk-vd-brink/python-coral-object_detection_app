@@ -2,11 +2,30 @@ from .base_detector import BaseDetector
 
 import os, cv2
 import pathlib, numpy as np
+from typing import List, NamedTuple
 from pycoral.utils import edgetpu
 from pycoral.utils import dataset
 from pycoral.adapters import common
 from pycoral.adapters import classify
 from PIL import Image
+
+class Rect(NamedTuple):
+    """A rectangle in 2D space."""
+    left: float
+    top: float
+    right: float
+    bottom: float
+
+class Category(NamedTuple):
+    """A result of a classification task."""
+    label: str
+    score: float
+    index: int
+
+class Detection(NamedTuple):
+    """A detected object as the result of an ObjectDetector."""
+    bounding_box: Rect
+    categories: List[Category]
 
 class ObjectDetector(BaseDetector):
 
@@ -37,14 +56,42 @@ class ObjectDetector(BaseDetector):
                                 }
 
         self._input_size = input_detail['shape'][2], input_detail['shape'][1]
-        print(self._input_size)
         self._is_quantized_input = input_detail['dtype'] == np.uint8
 
     def _preprocess(self, input_image):
         output_image = Image.fromarray(input_image).convert("RGB").resize(self._input_size, Image.ANTIALIAS)  
         return output_image
 
+    def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):
+        results = []
+    
+        for i in range(count):
+            if scores[i] >= 0.8:
+                y_min, x_min, y_max, x_max = boxes[i]
+                bounding_box = Rect(
+                        top=int(y_min * image_height),
+                        left=int(x_min * image_width),
+                        bottom=int(y_max * image_height),
+                        right=int(x_max * image_width))
+                class_id = int(classes[i])
+                category = Category(
+                                    score=scores[i],
+                                    label=self._label_list[class_id],  # 0 is reserved for background
+                                    index=class_id)
+                result = Detection(bounding_box=bounding_box, categories=[category])
+                results.append(result)
+
+            sorted_results = sorted(
+                                    results,
+                                    key=lambda detection: detection.categories[0].score,
+                                    reverse=True)
+            print(sorted_results)
+
+
     def detect(self, image):
+
+        image_height, image_width, _ = image.shape
+
         input_tensor = self._preprocess(image) 
 
         self._set_input_tensor(input_tensor)
@@ -55,17 +102,7 @@ class ObjectDetector(BaseDetector):
         scores = self._get_output_tensor(self._OUTPUT_SCORE_NAME)
         count = int(self._get_output_tensor(self._OUTPUT_NUMBER_NAME))
 
-        print(boxes)
-
-        # common.set_input(self._interpreter, image)
-        # classes = classify.get_classes(self._interpreter)
-        
-        # labels = dataset.read_label_file(self._label_file)
-
-        # for c in classes:
-        #     print(type(c))
-        #     print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
-        # return image
+        self._postprocess(image, boxes, classes, scores, count, image_width, image_height)
         return image
 
     def _set_input_tensor(self, image):
