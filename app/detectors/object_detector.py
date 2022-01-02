@@ -66,7 +66,7 @@ class ObjectDetector(BaseDetector):
         results = []
     
         for i in range(count):
-            if scores[i] >= 0.8:
+            if scores[i] >= 0.1:
                 y_min, x_min, y_max, x_max = boxes[i]
                 bounding_box = Rect(
                         top=int(y_min * image_height),
