@@ -108,8 +108,7 @@ class ObjectDetector(BaseDetector):
         scores = self._get_output_tensor(self._OUTPUT_SCORE_NAME)
         count = int(self._get_output_tensor(self._OUTPUT_NUMBER_NAME))
 
-        self._postprocess(image, boxes, classes, scores, count, image_width, image_height)
-        return image
+        return self._postprocess(image, boxes, classes, scores, count, image_width, image_height)
 
     def _set_input_tensor(self, image):
         """Sets the input tensor."""
