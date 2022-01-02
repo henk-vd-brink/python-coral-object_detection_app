@@ -53,6 +53,8 @@ class ObjectDetector(BaseDetector):
             [output['index'] for output in self._interpreter.get_output_details()])
             
 
+        print(sorted_output_indices)
+        
         self._output_indices = {
                                 self._OUTPUT_LOCATION_NAME: sorted_output_indices[0],
                                 self._OUTPUT_CATEGORY_NAME: sorted_output_indices[1],
