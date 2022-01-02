@@ -77,8 +77,8 @@ class ObjectDetector(BaseDetector):
                 
                 class_id = int(classes[i]+1)
 
-                image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 255, 0), 1)
-                image = cv2.putText(image, self._label_list[class_id], (bb_x_max, bb_y_min), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
+                image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1)
+                image = cv2.putText(image, self._label_list[class_id], (bb_x_min-30, bb_y_min), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
         return image
 
 
