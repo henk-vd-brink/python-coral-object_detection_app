@@ -34,7 +34,7 @@ class ObjectDetector(BaseDetector):
     _OUTPUT_SCORE_NAME = 'score'
     _OUTPUT_NUMBER_NAME = 'number of detections'
 
-    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite4_detection_default_2.tflite"
+    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite3x_detection_default_2.tflite"
     _label_file = "app/detectors/assets/labels/ssd_mobilenet_v1_1_metadata_1_labels.txt"
 
     _mean = 127.5
