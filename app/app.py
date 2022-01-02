@@ -9,7 +9,6 @@ app = Flask(__name__)
 detector = ObjectDetector()
 vc = cv2.VideoCapture(0)
 
-
 @app.route("/")
 def index():
     """Video streaming home page."""
@@ -22,9 +21,6 @@ def gen():
     while True:
         _, frame = vc.read()
         frame = detector.detect(frame)
-        
-        frame = frame.convert("RGB").resize((200,200), Image.ANTIALIAS) 
-
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
 

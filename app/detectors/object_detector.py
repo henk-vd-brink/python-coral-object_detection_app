@@ -1,12 +1,8 @@
 from .base_detector import BaseDetector
 
-import os, cv2
-import pathlib, numpy as np
-from typing import List, NamedTuple
+import cv2
+numpy as np
 from pycoral.utils import edgetpu
-from pycoral.utils import dataset
-from pycoral.adapters import common
-from pycoral.adapters import classify
 from PIL import Image
 
 class ObjectDetector(BaseDetector):
@@ -18,9 +14,6 @@ class ObjectDetector(BaseDetector):
 
     _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite0_detection_metadata_1.tflite"
     _label_file = "app/detectors/assets/labels/ssd_mobilenet_v1_1_metadata_1_labels.txt"
-
-    _mean = 127.5
-    _std = 127.5
 
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)
