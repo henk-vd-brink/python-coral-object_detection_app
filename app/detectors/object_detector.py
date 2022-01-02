@@ -43,10 +43,15 @@ class ObjectDetector(BaseDetector):
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)
         self._interpreter.allocate_tensors()
+
+        with open(self._label_file, "r") as label_file:
+            label_list = label_file.read().splitlines()
+            self._label_list = [label.decode('ascii') for label in label_list]
         
         input_detail = self._interpreter.get_input_details()[0]
         sorted_output_indices = sorted(
             [output['index'] for output in self._interpreter.get_output_details()])
+            
 
         self._output_indices = {
                                 self._OUTPUT_LOCATION_NAME: sorted_output_indices[0],
