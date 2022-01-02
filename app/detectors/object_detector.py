@@ -77,7 +77,7 @@ class ObjectDetector(BaseDetector):
                 bb_y_min = round(y_min * image_height)
                 bb_y_max = round(y_max * image_height)
                 
-                class_id = int(classes[i])
+                class_id = int(classes[i]+1)
                 print(self._label_list[class_id])
                 image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (255, 0, 0), 1)
         return image
