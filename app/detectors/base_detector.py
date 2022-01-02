@@ -2,6 +2,6 @@ from abc import ABCMeta, abstractmethod
 
 class BaseDetector(metaclass=ABCMeta):
 
-    @abstractmethod()
+    @abstractmethod
     def detect(self, image):
         ...
