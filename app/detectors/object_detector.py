@@ -1,7 +1,7 @@
 from .base_detector import BaseDetector
 
 import cv2
-numpy as np
+import numpy as np
 from pycoral.utils import edgetpu
 from PIL import Image
 
