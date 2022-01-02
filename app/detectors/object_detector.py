@@ -70,7 +70,7 @@ class ObjectDetector(BaseDetector):
 
     def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):    
         for i in range(count):
-            if scores[i] >= 0.7:
+            if scores[i] >= 0.4:
                 y_min, x_min, y_max, x_max = boxes[i]
                 bb_x_min = round(x_min * image_width)
                 bb_x_max = round(x_max * image_width)
