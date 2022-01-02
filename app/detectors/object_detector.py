@@ -61,8 +61,6 @@ class ObjectDetector(BaseDetector):
                                 }
 
         self._input_size = input_detail['shape'][2], input_detail['shape'][1]
-        # self._input_size = 300, 300
-
         self._is_quantized_input = input_detail['dtype'] == np.uint8
 
     def _preprocess(self, input_image):
