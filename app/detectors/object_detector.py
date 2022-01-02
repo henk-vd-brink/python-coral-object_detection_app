@@ -46,7 +46,7 @@ class ObjectDetector(BaseDetector):
 
         with open(self._label_file, "r") as label_file:
             self._label_list = label_file.readlines() 
-        self._label_list.replace("\n","")           
+        self._label_list = [label.replace("\n","") for label in self._label_list]       
         
         input_detail = self._interpreter.get_input_details()[0]
         sorted_output_indices = sorted(
