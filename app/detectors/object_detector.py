@@ -23,13 +23,12 @@ class ObjectDetector(BaseDetector):
         pil_image = Image.fromarray(image).convert("RGB").resize(self._size, Image.ANTIALIAS)   
         common.set_input(self._interpreter, pil_image)
         self._interpreter.invoke()
-        classes = classify.get_classes(self._interpreter, top_k=1)
+        classes = classify.get_classes(self._interpreter)
         
         labels = dataset.read_label_file(self._label_file)
 
-        print(classes)
-
         for c in classes:
+            print(c.__dict__)
             print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
         return image
 
