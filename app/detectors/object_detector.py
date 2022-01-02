@@ -84,7 +84,7 @@ class ObjectDetector(BaseDetector):
                                     index=class_id)
                 result = Detection(bounding_box=bounding_box, categories=[category])
                 results.append(result)
-                image = cv2.rectangle(image, (x_min, y_min), (x_max, y_max), color="#FFF", thickness=1)
+                image = cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (255, 0, 0), 1)
         return image
 
 
