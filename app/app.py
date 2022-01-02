@@ -6,6 +6,8 @@ from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
 detector = ObjectDetector()
+vc = cv2.VideoCapture(0)
+
 
 @app.route("/")
 def index():
@@ -15,8 +17,6 @@ def index():
 
 def gen():
     """Video streaming generator function."""
-
-    vc = cv2.VideoCapture(0)
 
     while True:
         _, frame = vc.read()

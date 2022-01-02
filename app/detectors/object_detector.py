@@ -9,24 +9,6 @@ from pycoral.adapters import common
 from pycoral.adapters import classify
 from PIL import Image
 
-class Rect(NamedTuple):
-    """A rectangle in 2D space."""
-    left: float
-    top: float
-    right: float
-    bottom: float
-
-class Category(NamedTuple):
-    """A result of a classification task."""
-    label: str
-    score: float
-    index: int
-
-class Detection(NamedTuple):
-    """A detected object as the result of an ObjectDetector."""
-    bounding_box: Rect
-    categories: List[Category]
-
 class ObjectDetector(BaseDetector):
 
     _OUTPUT_LOCATION_NAME = 'location'
