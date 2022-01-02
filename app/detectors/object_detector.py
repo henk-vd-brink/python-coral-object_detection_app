@@ -21,7 +21,7 @@ class ObjectDetector(BaseDetector):
     _mean = 127.5
     _std = 127.5
 
-    _input_size = (300, 300)
+    _input_size = (480, 640)
 
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)
