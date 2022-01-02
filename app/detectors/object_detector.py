@@ -45,8 +45,9 @@ class ObjectDetector(BaseDetector):
         self._interpreter.allocate_tensors()
 
         with open(self._label_file, "r") as label_file:
-            label_list = label_file.read().splitlines()
-            self._label_list = [label.decode('ascii') for label in label_list]
+            self._label_list = label_file.readlines()
+        print("label list", self._label_list)
+            
         
         input_detail = self._interpreter.get_input_details()[0]
         sorted_output_indices = sorted(
