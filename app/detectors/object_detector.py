@@ -90,7 +90,7 @@ class ObjectDetector(BaseDetector):
                                     key=lambda detection: detection.categories[0].score,
                                     reverse=True)
             print("final image size", image.shape)
-            return cv2.rectange(image, (x_min, y_min), (x_max, y_max), color="#FFF", thickness=1)
+            return cv2.rectangle(image, (x_min, y_min), (x_max, y_max), color="#FFF", thickness=1)
 
 
     def detect(self, image):
