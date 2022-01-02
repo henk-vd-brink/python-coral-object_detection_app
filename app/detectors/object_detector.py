@@ -52,11 +52,10 @@ class ObjectDetector(BaseDetector):
         input_tensor = self._preprocess(image) 
 
         self._set_input_tensor(input_tensor)
-        self._interpreter.ivoke()
+        self._interpreter.invoke()
 
 
         common.set_input(self._interpreter, image)
-        self._interpreter.invoke()
         classes = classify.get_classes(self._interpreter)
         
         labels = dataset.read_label_file(self._label_file)
