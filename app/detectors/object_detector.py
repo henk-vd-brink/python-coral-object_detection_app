@@ -45,7 +45,8 @@ class ObjectDetector(BaseDetector):
         self._interpreter.allocate_tensors()
 
         with open(self._label_file, "r") as label_file:
-            self._label_list = label_file.readlines()            
+            self._label_list = label_file.readlines() 
+        self._label_list.replace("\n","")           
         
         input_detail = self._interpreter.get_input_details()[0]
         sorted_output_indices = sorted(
@@ -70,7 +71,7 @@ class ObjectDetector(BaseDetector):
 
     def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):    
         for i in range(count):
-            if scores[i] >= 0.5:
+            if scores[i] >= 0.65:
                 y_min, x_min, y_max, x_max = boxes[i]
                 bb_x_min = round(x_min * image_width)
                 bb_x_max = round(x_max * image_width)
