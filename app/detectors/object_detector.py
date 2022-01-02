@@ -84,13 +84,8 @@ class ObjectDetector(BaseDetector):
                                     index=class_id)
                 result = Detection(bounding_box=bounding_box, categories=[category])
                 results.append(result)
-
-            sorted_results = sorted(
-                                    results,
-                                    key=lambda detection: detection.categories[0].score,
-                                    reverse=True)
-            print("final image size", image.shape)
             return cv2.rectangle(image, (x_min, y_min), (x_max, y_max), color="#FFF", thickness=1)
+        return image
 
 
     def detect(self, image):
