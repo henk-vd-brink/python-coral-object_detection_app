@@ -26,9 +26,6 @@ class ObjectDetector(BaseDetector):
         self._interpreter.allocate_tensors()
         
         input_detail = self._interpreter.get_input_details()[0]
-
-        self._size = common.input_size(self._interpreter)
-
         sorted_output_indices = sorted(
             [output['index'] for output in self._interpreter.get_output_details()])
 
@@ -44,7 +41,7 @@ class ObjectDetector(BaseDetector):
         self._is_quantized_input = input_detail['dtype'] == np.uint8
 
     def _preprocess(self, input_image):
-        output_image = Image.fromarray(input_image).convert("RGB").resize(self._size, Image.ANTIALIAS)  
+        output_image = Image.fromarray(input_image).convert("RGB").resize(self._input_size, Image.ANTIALIAS)  
         return output_image
 
     def detect(self, image):
