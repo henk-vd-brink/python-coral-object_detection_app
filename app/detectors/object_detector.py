@@ -51,9 +51,6 @@ class ObjectDetector(BaseDetector):
         input_detail = self._interpreter.get_input_details()[0]
         sorted_output_indices = sorted(
             [output['index'] for output in self._interpreter.get_output_details()])
-            
-
-        print(sorted_output_indices)
         
         self._output_indices = {
                                 self._OUTPUT_LOCATION_NAME: sorted_output_indices[0],
@@ -79,7 +76,6 @@ class ObjectDetector(BaseDetector):
                 bb_y_max = round(y_max * image_height)
                 
                 class_id = int(classes[i]+1)
-                print(class_id)
 
                 image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 255, 0), 1)
                 image = cv2.putText(image, self._label_list[class_id], (bb_x_max, bb_y_min), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
