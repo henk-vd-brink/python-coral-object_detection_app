@@ -28,7 +28,7 @@ class ObjectDetector(BaseDetector):
         labels = dataset.read_label_file(self._label_file)
 
         for c in classes:
-            print(c.__dict__)
+            print(c)
             print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
         return image
 
