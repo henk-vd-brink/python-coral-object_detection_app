@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import cv2, io
 from flask import Flask, render_template, Response
+from PIL import Image
 
 from .detectors import BirdDetector, ObjectDetector
 
@@ -21,6 +22,8 @@ def gen():
     while True:
         _, frame = vc.read()
         frame = detector.detect(frame)
+        
+        frame = frame.convert("RGB").resize((200,200), Image.ANTIALIAS) 
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
