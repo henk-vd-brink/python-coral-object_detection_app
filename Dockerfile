@@ -1,4 +1,4 @@
-FROM python:3.8.9-buster
+FROM python:3.7.2-buster
 
 RUN apt-get update
 
