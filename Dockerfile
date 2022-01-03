@@ -20,7 +20,7 @@ RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 RUN apt-get update
 
 RUN apt-get install libedgetpu1-std -y 
-RUN apt-get install python3-pycoral -y
+# RUN apt-get install python3-pycoral -y
 
 RUN apt-get update
 
@@ -32,6 +32,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
 RUN pip3 install cmake
+RUN pip3 install --extra-index-url https://google-coral.github.io/py-repo/ pycoral~=2.0
 
 COPY . .
 
