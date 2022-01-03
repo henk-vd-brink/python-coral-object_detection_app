@@ -16,6 +16,7 @@ def video_processing():
         time.sleep(1)
         _, frame = vc.read()
         q1.put(frame)
+        print(frame.shape)
         print("Video Processing q1: ", q1.qsize())
 
 def object_detection():
@@ -31,7 +32,7 @@ def object_detection():
             print("Could not get frame")
             traceback.print_exc()
 
-        print("Object detection q1: ", q2.qsize())
+        print("Object detection q2: ", q2.qsize())
 
 def start_api():
     app.run(host="0.0.0.0", threaded=True)
