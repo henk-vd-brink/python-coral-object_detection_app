@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import multiprocessing as mp
+
 import cv2, io, traceback, time
 from flask import Flask, render_template, Response
 from PIL import Image
@@ -7,9 +9,29 @@ from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
 
-detector = ObjectDetector()
+q1 = mp.Queue()
+q2 = mp.Queue()
 
-vc = cv2.VideoCapture(0)
+def video_processing():
+    vc = cv2.VideoCapture(0)
+
+    while True:
+        _, frame = vc.read()
+        q1.put(frame)
+        print("put")
+
+
+
+def object_detection():
+    detector = ObjectDetector()
+
+    while True:
+        print("get")
+        frame = q1.get()
+        frame = detector.detect(frame)
+        q2.put(frame)
+
+
 
 @app.route("/")
 def index():
@@ -21,11 +43,8 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        _, frame = vc.read()
-        try:
-            frame = detector.detect(frame)
-        except Exception:
-            print(traceback.format_exc())
+        print("gen")
+        frame = q2.get()
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
