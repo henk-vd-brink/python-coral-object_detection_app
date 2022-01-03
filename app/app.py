@@ -32,7 +32,7 @@ def object_detection():
             frame = detector.detect(frame)
             q2.put(frame)
         except Exception:
-            pass
+            traceback.print_exc()
 
         print("Object detection ", q2.qsize())
 
