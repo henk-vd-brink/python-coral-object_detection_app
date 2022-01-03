@@ -18,7 +18,7 @@ def video_processing():
     while True:
         _, frame = vc.read()
         q1.put(frame)
-        print("put")
+        print("Video Processing ", q1.qsize())
 
 
 
@@ -30,6 +30,8 @@ def object_detection():
         frame = q1.get()
         frame = detector.detect(frame)
         q2.put(frame)
+
+        print("Object detection ", q2.qsize())
 
 def start_api():
     app.run(host="0.0.0.0", threaded=True)
@@ -45,7 +47,6 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        print("gen")
         frame = q2.get()
 
         _, image_buffer = cv2.imencode(".jpg", frame)
