@@ -16,6 +16,7 @@ def video_processing():
     vc = cv2.VideoCapture(0)
 
     while True:
+        time.sleep()
         _, frame = vc.read()
         q1.put(frame)
         print("Video Processing ", q1.qsize())
