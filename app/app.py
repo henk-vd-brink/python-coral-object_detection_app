@@ -15,7 +15,7 @@ def video_processing():
     while True:
         time.sleep(0.1)
         _, frame = vc.read()
-        if isinstance(frame, None):
+        if frame is None:
             print("Frame is of type NoneType, reset Raspberry")
         q1.put(frame)
         print("Video Processing q1: ", q1.qsize())
