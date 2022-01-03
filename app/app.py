@@ -70,11 +70,8 @@ if __name__ == "__main__":
     q2 = mp.Queue()
 
     p1 = mp.Process(target=video_processing)
-    p1.daemon = True
     p2 = mp.Process(target=object_detection)
-    p2.daemon = True
     p3 = mp.Process(target=start_api)
-    p3.daemon = True
     p1.start()
     p2.start()
     p3.start()
