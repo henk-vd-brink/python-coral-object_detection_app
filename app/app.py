@@ -9,8 +9,6 @@ from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
 
-q1 = mp.Queue()
-q2 = mp.Queue()
 
 def video_processing():
     vc = cv2.VideoCapture(0)
@@ -19,23 +17,24 @@ def video_processing():
         time.sleep(1)
         _, frame = vc.read()
         q1.put(frame)
-        print("Video Processing ", q1.qsize())
-
-
+        print("Video Processing q1: ", q1.qsize())
 
 def object_detection():
     detector = ObjectDetector()
 
     while True:
-        print(q1.qsize())
-        try:
-            frame = q1.get()
-            frame = detector.detect(frame)
-            q2.put(frame)
-        except Exception:
-            traceback.print_exc()
+        print("Object detection q1: ", q1.qsize())
 
-        print("Object detection ", q2.qsize())
+        frame = q1.get()
+        
+        if not frame:
+            continue
+
+        frame = q1.get()
+        frame = detector.detect(frame)
+        q2.put(frame)
+
+        print("Object detection q1: ", q2.qsize())
 
 def start_api():
     app.run(host="0.0.0.0", threaded=True)
@@ -51,7 +50,7 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        frame = q2.get()
+        frame = q1.get()
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
@@ -67,9 +66,15 @@ def video_feed():
     return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 if __name__ == "__main__":
+    q1 = mp.Queue()
+    q2 = mp.Queue()
+
     p1 = mp.Process(target=video_processing)
+    p1.daemon = True
     p2 = mp.Process(target=object_detection)
+    p2.daemon = True
     p3 = mp.Process(target=start_api)
+    p3.daemon = True
     p1.start()
     p2.start()
     p3.start()
