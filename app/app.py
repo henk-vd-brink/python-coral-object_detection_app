@@ -16,7 +16,6 @@ def video_processing():
         time.sleep(1)
         _, frame = vc.read()
         q1.put(frame)
-        print(frame.shape)
         print("Video Processing q1: ", q1.qsize())
 
 def object_detection():
@@ -29,8 +28,9 @@ def object_detection():
             frame = detector.detect(frame)
             q2.put(frame)
         except Exception:
-            print("Could not get frame")
+            print("----------------- 1 object detection -----------------")
             traceback.print_exc()
+            print("----------------- 2 object detection -----------------")
 
         print("Object detection q2: ", q2.qsize())
 
@@ -48,7 +48,12 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        frame = q2.get()
+        frame = q1.get()
+
+        try:
+            frame = q2.get()
+        except Exception:
+            pass
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
@@ -57,11 +62,11 @@ def gen():
             b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
         )
 
-
 @app.route("/video_feed")
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
 
 if __name__ == "__main__":
     q1 = mp.Queue()
