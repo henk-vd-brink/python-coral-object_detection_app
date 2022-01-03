@@ -46,7 +46,7 @@ def gen():
     while True:
         print("Get new image!")
         frame = q1.get()
-
+        time.sleep(0.025)
         try:
             frame = q2.get()
         except Exception:
