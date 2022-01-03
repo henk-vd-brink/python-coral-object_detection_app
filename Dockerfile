@@ -14,8 +14,8 @@ RUN apt-get install ffmpeg libsm6 libxext6 python3-opencv \
     libhdf5-dev libhdf5-serial-dev libhdf5-103 \
     libqtgui4 libqtwebkit4 libqt4-test python3-pyqt5 -y
 
-RUN echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+RUN echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | tee /etc/apt/sources.list.d/coral-edgetpu.list
+RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
 RUN apt-get update
 RUN apt-get install python3-pycoral
