@@ -47,10 +47,13 @@ def gen():
         print("Get new image!")
         frame = q1.get()
         time.sleep(0.025)
+
         try:
-            frame = q2.get()
+            frame_ = q2.get()
+            print("helloo!")
         except Exception:
             print("q1 it is")
+
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
