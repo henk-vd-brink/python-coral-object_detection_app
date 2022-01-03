@@ -29,6 +29,7 @@ def object_detection():
             q2.put(frame)
         except Exception:
             print("Could not get frame")
+            traceback.print_exc()
 
         print("Object detection q1: ", q2.qsize())
 
