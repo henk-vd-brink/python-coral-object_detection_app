@@ -23,15 +23,12 @@ def object_detection():
     detector = ObjectDetector()
 
     while True:
-        print("Object detection q1 start: ", q1.qsize())
         try:
             frame = q1.get()
             frame = detector.detect(frame)
             q2.put(frame)
         except Exception:
-            print("Could not get frame")
-
-        print("Object detection q1: ", q2.qsize())
+            pass
 
 def start_api():
     app.run(host="0.0.0.0", threaded=True)
@@ -45,10 +42,10 @@ def index():
 
 def gen():
     """Video streaming generator function."""
-
+    
     while True:
-        print("GEN!")
-        frame = q2.get()
+        print("Get new image!")
+        frame = q1.get()
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
