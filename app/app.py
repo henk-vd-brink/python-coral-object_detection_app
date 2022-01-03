@@ -27,7 +27,7 @@ def object_detection():
 
         frame = q1.get()
 
-        if not frame:
+        if frame == None:
             continue
 
         frame = q1.get()
