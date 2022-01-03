@@ -18,6 +18,7 @@ RUN echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" |
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
 RUN apt-get update
+RUN apt-get install libedgetpu1-std -y 
 RUN apt-get install python3-pycoral -y
 
 WORKDIR /app
