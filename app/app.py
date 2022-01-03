@@ -14,7 +14,7 @@ vc = cv2.VideoCapture(0)
 def video_processing():
 
     while True:
-        time.sleep(0.1)
+        time.sleep(1)
         _, frame = vc.read()
         q1.put(frame)
         print("Video Processing q1: ", q1.qsize())
@@ -23,12 +23,15 @@ def object_detection():
     detector = ObjectDetector()
 
     while True:
+        print("Object detection q1 start: ", q1.qsize())
         try:
             frame = q1.get()
             frame = detector.detect(frame)
             q2.put(frame)
         except Exception:
-            pass
+            print("Could not get frame")
+
+        print("Object detection q1: ", q2.qsize())
 
 def start_api():
     app.run(host="0.0.0.0", threaded=True)
@@ -44,9 +47,9 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        time.sleep(0.1)
-        print("Get new image!")
+        print("GEN!")
         frame = q2.get()
+
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
 
@@ -61,8 +64,8 @@ def video_feed():
     return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 if __name__ == "__main__":
-    q1 = mp.Queue(10)
-    q2 = mp.Queue(10)
+    q1 = mp.Queue()
+    q2 = mp.Queue()
 
     p1 = mp.Process(target=video_processing)
     p2 = mp.Process(target=object_detection)
