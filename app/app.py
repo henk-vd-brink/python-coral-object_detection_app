@@ -52,7 +52,7 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        frame = q1.get()
+        frame = q2.get()
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
