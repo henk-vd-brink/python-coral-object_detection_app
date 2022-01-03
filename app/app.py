@@ -17,6 +17,7 @@ def video_processing():
         time.sleep(1)
         _, frame = vc.read()
         q1.put(frame)
+        print("joe")
         print("Video Processing q1: ", q1.qsize())
 
 def object_detection():
