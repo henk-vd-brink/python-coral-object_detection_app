@@ -6,13 +6,8 @@ from PIL import Image
 from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
-while True:
-    try:
-        detector = ObjectDetector()
-        break
-    except Exception:
-        print("Could not connect to Edge TPU")
-        time.sleep(2)
+
+detector = ObjectDetector()
 
 vc = cv2.VideoCapture(0)
 
