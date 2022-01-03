@@ -24,15 +24,13 @@ def object_detection():
 
     while True:
         print("Object detection q1: ", q1.qsize())
+        try:
 
-        frame = q1.get()
-
-        if frame == None:
-            continue
-
-        frame = q1.get()
-        frame = detector.detect(frame)
-        q2.put(frame)
+            frame = q1.get()
+            frame = detector.detect(frame)
+            q2.put(frame)
+        except Exception:
+            print("could not get frame from q1")
 
         print("Object detection q1: ", q2.qsize())
 
