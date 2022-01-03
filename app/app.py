@@ -45,14 +45,7 @@ def gen():
 
     while True:
         print("Get new image!")
-        frame = q1.get()
-        time.sleep(0.025)
-
-        try:
-            frame_ = q2.get()
-            print("helloo!")
-        except Exception:
-            print("q1 it is")
+        frame = q2.get()
 
 
         _, image_buffer = cv2.imencode(".jpg", frame)
@@ -69,8 +62,8 @@ def video_feed():
     return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 if __name__ == "__main__":
-    q1 = mp.Queue()
-    q2 = mp.Queue()
+    q1 = mp.Queue(10)
+    q2 = mp.Queue(10)
 
     p1 = mp.Process(target=video_processing)
     p2 = mp.Process(target=object_detection)
