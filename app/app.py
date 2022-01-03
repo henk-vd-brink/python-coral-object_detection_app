@@ -44,6 +44,7 @@ def gen():
     """Video streaming generator function."""
 
     while True:
+        time.sleep(0.1)
         print("Get new image!")
         frame = q2.get()
         _, image_buffer = cv2.imencode(".jpg", frame)
