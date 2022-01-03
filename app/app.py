@@ -13,7 +13,7 @@ def video_processing():
     vc = cv2.VideoCapture(0)
 
     while True:
-        time.sleep(1)
+        time.sleep(0.1)
         _, frame = vc.read()
         q1.put(frame)
         print("Video Processing q1: ", q1.qsize())
@@ -53,7 +53,7 @@ def gen():
         try:
             frame = q2.get()
         except Exception:
-            pass
+            print("Could not get an image with detection")
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
