@@ -31,6 +31,8 @@ def object_detection():
         frame = detector.detect(frame)
         q2.put(frame)
 
+def start_api():
+    app.run(host="0.0.0.0", threaded=True)
 
 
 @app.route("/")
@@ -58,3 +60,11 @@ def gen():
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+if __name__ == "__main__":
+    p1 = mp.Process(target=video_processing)
+    p2 = mp.Process(target=object_detection)
+    p3 = mp.Process(target=start_api)
+    p1.start()
+    p2.start()
+    p3.start()
