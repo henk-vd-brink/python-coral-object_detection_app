@@ -14,8 +14,6 @@ while True:
         print("Could not connect to Edge TPU")
         time.sleep(2)
 
-
-
 vc = cv2.VideoCapture(0)
 
 @app.route("/")
