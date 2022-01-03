@@ -14,7 +14,7 @@ vc = cv2.VideoCapture(0)
 def video_processing():
 
     while True:
-        time.sleep(0.025)
+        time.sleep(0.1)
         _, frame = vc.read()
         q1.put(frame)
         print("Video Processing q1: ", q1.qsize())
@@ -46,8 +46,6 @@ def gen():
     while True:
         print("Get new image!")
         frame = q2.get()
-
-
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
 
