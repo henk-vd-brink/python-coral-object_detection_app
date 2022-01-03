@@ -26,10 +26,11 @@ def object_detection():
         print("Object detection q1 start: ", q1.qsize())
         try:
             frame = q1.get()
+            worked = True
         except Exception:
-            frame = None
+            worked = False
         
-        if not frame:
+        if not worked:
             continue
 
         frame = detector.detect(frame)
