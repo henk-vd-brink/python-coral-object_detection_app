@@ -26,15 +26,10 @@ def object_detection():
         print("Object detection q1 start: ", q1.qsize())
         try:
             frame = q1.get()
-            worked = True
+            frame = detector.detect(frame)
+            q2.put(frame)
         except Exception:
-            worked = False
-        
-        if not worked:
-            continue
-
-        frame = detector.detect(frame)
-        q2.put(frame)
+            print("Could not get frame")
 
         print("Object detection q1: ", q2.qsize())
 
@@ -52,6 +47,7 @@ def gen():
     """Video streaming generator function."""
 
     while True:
+        print("GEN!")
         frame = q2.get()
 
         _, image_buffer = cv2.imencode(".jpg", frame)
