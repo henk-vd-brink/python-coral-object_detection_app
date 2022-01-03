@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import cv2, io
+import cv2, io, traceback
 from flask import Flask, render_template, Response
 from PIL import Image
 
@@ -20,7 +20,11 @@ def gen():
 
     while True:
         _, frame = vc.read()
-        frame = detector.detect(frame)
+        try:
+            frame = detector.detect(frame)
+        except Exception:
+            print(traceback.format_exc())
+
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
 
