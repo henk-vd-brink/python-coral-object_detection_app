@@ -1,12 +1,21 @@
 #!/usr/bin/env python
-import cv2, io, traceback
+import cv2, io, traceback, time
 from flask import Flask, render_template, Response
 from PIL import Image
 
 from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
-detector = ObjectDetector()
+while True:
+    try:
+        detector = ObjectDetector()
+        break
+    except Exception:
+        print("Could not connect to Edge TPU")
+        time.sleep(2)
+
+
+
 vc = cv2.VideoCapture(0)
 
 @app.route("/")
