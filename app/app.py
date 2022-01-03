@@ -27,6 +27,7 @@ def object_detection():
     detector = ObjectDetector()
 
     while True:
+        print(q1.qsize())
         try:
             frame = q1.get()
             frame = detector.detect(frame)
