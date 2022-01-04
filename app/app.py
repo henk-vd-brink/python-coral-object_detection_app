@@ -10,22 +10,7 @@ from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
 
-VIDEO_SCREEN_SIZE = (640, 480)
-
-# def video_processing():
-#     vc = cv2.VideoCapture(0)
-
-#     while True:
-#         time.sleep(0.1)
-#         _, frame = vc.read()
-#         frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
-
-#         if frame is None:
-#             print("Frame is of type NoneType, reset Raspberry")
-
-#         q1.put(frame)
-#         q1_p.put(frame.copy())
-#         print("Video Processing q1: ", q1.qsize())
+VIDEO_SCREEN_SIZE = (320, 240)
 
 def run_object_detection():
     detector = ObjectDetector()
@@ -46,11 +31,6 @@ def run_object_detection():
             print("----------------- 2 object detection -----------------")
             q2.put(np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3)))
         print("Object detection q2: ", q2.qsize())
-
-
-
-
-
 
 def run_api():
 
