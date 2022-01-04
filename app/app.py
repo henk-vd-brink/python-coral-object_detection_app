@@ -9,7 +9,7 @@ from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
 
-VIDEO_SCREEN_SIZE = (480, 640)
+VIDEO_SCREEN_SIZE = (640, 480)
 
 def video_processing():
     vc = cv2.VideoCapture(0)
