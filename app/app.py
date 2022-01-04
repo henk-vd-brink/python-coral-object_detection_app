@@ -57,10 +57,11 @@ def index():
     return render_template("index.html")
 
 @contextmanager
-def get_frame(*args, **kwargs):
+def video_capture(*args, **kwargs):
     vc = cv2.VideoCapture(0)
+    
     try:
-        yield vc.read()
+        return vc
     finally: 
         vc.release()
         print("Released video capture.")
@@ -68,29 +69,30 @@ def get_frame(*args, **kwargs):
 def gen():
     """Video streaming generator function."""
 
-    frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
-    
-    while True:
-        _, frame = get_frame()
-        frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
+    with video_capture() as vc:
+        frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
+        
+        while True:
+            _, frame = vc.read()
+            frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
-        if frame is None:
-            print("Frame is of type NoneType, reset Raspberry...")
+            if frame is None:
+                print("Frame is of type NoneType, reset Raspberry...")
 
-        q1.put(frame)
+            q1.put(frame)
 
-        if q2.qsize():
-            frame_mask = q2.get()
+            if q2.qsize():
+                frame_mask = q2.get()
 
-        frame = frame + frame_mask
-        frame[frame > 255] = 255
+            frame = frame + frame_mask
+            frame[frame > 255] = 255
 
-        _, image_buffer = cv2.imencode(".jpg", frame)
-        io_buf = io.BytesIO(image_buffer)
+            _, image_buffer = cv2.imencode(".jpg", frame)
+            io_buf = io.BytesIO(image_buffer)
 
-        yield (
-            b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
-        )
+            yield (
+                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
+            )
 
 @app.route("/video_feed")
 def video_feed():
