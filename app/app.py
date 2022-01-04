@@ -11,29 +11,29 @@ app = Flask(__name__)
 
 VIDEO_SCREEN_SIZE = (640, 480)
 
-def video_processing():
-    vc = cv2.VideoCapture(0)
+# def video_processing():
+#     vc = cv2.VideoCapture(0)
 
-    while True:
-        time.sleep(0.1)
-        _, frame = vc.read()
-        frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
+#     while True:
+#         time.sleep(0.1)
+#         _, frame = vc.read()
+#         frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
-        if frame is None:
-            print("Frame is of type NoneType, reset Raspberry")
+#         if frame is None:
+#             print("Frame is of type NoneType, reset Raspberry")
 
-        q1.put(frame)
-        q1_p.put(frame.copy())
-        print("Video Processing q1: ", q1.qsize())
+#         q1.put(frame)
+#         q1_p.put(frame.copy())
+#         print("Video Processing q1: ", q1.qsize())
 
 def object_detection():
     detector = ObjectDetector()
 
     while True:
-        print("Object detection q1 start: ", q1_p.qsize())
+        print("Object detection q1 start: ", q1.qsize())
         try:
             
-            frame = q1_p.get()
+            frame = q1.get()
             t1_start = time.perf_counter()
             frame = detector.detect(frame)
             print("Time to detect: ", time.perf_counter()-t1_start)
@@ -55,16 +55,25 @@ def index():
     """Video streaming home page."""
     return render_template("index.html")
 
+vc = cv2.VideoCapture(0)
 
 def gen():
     """Video streaming generator function."""
     frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
+    
     while True:
-        frame = q1.get()
+        _, frame = vc.read()
+        frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
+
+        if frame is None:
+            print("Frame is of type NoneType, reset Raspberry...")
+
+        q1.put(frame)
+
         if q2.qsize():
             frame_mask = q2.get()
-        frame = frame + frame_mask
 
+        frame = frame + frame_mask
         frame[frame > 255] = 255
 
         _, image_buffer = cv2.imencode(".jpg", frame)
@@ -81,13 +90,12 @@ def video_feed():
 
 
 if __name__ == "__main__":
-    q1 = mp.Queue(2)
-    q2 = mp.Queue(2)
-    q1_p = mp.Queue(1)
+    q1 = mp.Queue(1)
+    q2 = mp.Queue(1)
 
-    p1 = mp.Process(target=video_processing)
+    # p1 = mp.Process(target=video_processing)
     p2 = mp.Process(target=object_detection)
     p3 = mp.Process(target=start_api)
-    p1.start()
+    # p1.start()
     p2.start()
     p3.start()
