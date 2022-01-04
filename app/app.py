@@ -65,7 +65,7 @@ def run_api():
             if frame is None:
                 print("Frame is of type NoneType, -> error with /dev/usb0 -> reset Raspberry...")
 
-            q1.put(frame)
+            q1.put(frame.copy())
             print("Put time: ", time.perf_counter()-t_0)
 
             if q2.qsize():
@@ -75,7 +75,7 @@ def run_api():
 
             frame = frame + frame_mask
             frame[frame > 255] = 255
-            
+
             _, image_buffer = cv2.imencode(".jpg", frame)
             io_buf = io.BytesIO(image_buffer)
 
