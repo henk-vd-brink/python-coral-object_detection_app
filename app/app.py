@@ -89,7 +89,8 @@ def run_api():
         app.run(host="0.0.0.0", threaded=True)
 
 
-def main():
+
+if __name__ == "__main__":
     q1 = mp.Queue(1)
     q2 = mp.Queue(1)
 
@@ -97,7 +98,3 @@ def main():
     p3 = mp.Process(target=run_api)
     p2.start()
     p3.start()
-
-
-if __name__ == "__main__":
-    main()

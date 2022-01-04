@@ -36,4 +36,4 @@ RUN pip3 install --extra-index-url https://google-coral.github.io/py-repo/ pycor
 
 COPY . .
 
-CMD ["python3", "-m", "app"]
+CMD ["python3", "-m", "app.app"]
