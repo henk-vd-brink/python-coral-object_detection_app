@@ -56,20 +56,20 @@ def index():
     """Video streaming home page."""
     return render_template("index.html")
 
-@contextmanager
-def video_capture(*args, **kwargs):
-    vc = cv2.VideoCapture(0)
+class VideoCapture:
+    def __init__(self):
+        self._vc = cv2.VideoCapture(0)
     
-    try:
-        return vc
-    finally: 
-        vc.release()
-        print("Released video capture.")
+    def __enter__(self):
+        return self._vc
+
+    def __exit__(self):
+        self._vc.release()
 
 def gen():
     """Video streaming generator function."""
 
-    with video_capture() as vc:
+    with VideoCapture() as vc:
         frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
         
         while True:
