@@ -64,46 +64,45 @@ def run_api():
         def __exit__(self):
             self.release()
 
+    @app.route("/")
+    def index():
+        """Video streaming home page."""
+        return render_template("index.html")
+
+    @app.route("/video_feed")
+    def video_feed():
+        """Video streaming route. Put this in the src attribute of an img tag."""
+        return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+    def gen():
+        """Video streaming generator function."""
+
+        frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
+        
+        while True:
+            _, frame = vc.read()
+            frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
+
+            if frame is None:
+                print("Frame is of type NoneType, reset Raspberry...")
+
+            q1.put(frame)
+
+            if q2.qsize():
+                frame_mask = q2.get()
+
+            frame = frame + frame_mask
+            frame[frame > 255] = 255
+
+            _, image_buffer = cv2.imencode(".jpg", frame)
+            io_buf = io.BytesIO(image_buffer)
+
+            yield (
+                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
+            )
 
     with VideoCapture(0) as vc:
-
-        @app.route("/")
-        def index():
-            """Video streaming home page."""
-            return render_template("index.html")
-
-        def gen():
-            """Video streaming generator function."""
-
-            frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
-            
-            while True:
-                _, frame = vc.read()
-                frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
-
-                if frame is None:
-                    print("Frame is of type NoneType, reset Raspberry...")
-
-                q1.put(frame)
-
-                if q2.qsize():
-                    frame_mask = q2.get()
-
-                frame = frame + frame_mask
-                frame[frame > 255] = 255
-
-                _, image_buffer = cv2.imencode(".jpg", frame)
-                io_buf = io.BytesIO(image_buffer)
-
-                yield (
-                    b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
-                )
-        @app.route("/video_feed")
-        def video_feed():
-            """Video streaming route. Put this in the src attribute of an img tag."""
-            return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
-
-    app.run(host="0.0.0.0", threaded=True)
+        app.run(host="0.0.0.0", threaded=True)
 
 
 
