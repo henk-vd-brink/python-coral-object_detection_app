@@ -27,7 +27,7 @@ VIDEO_SCREEN_SIZE = (640, 480)
 #         q1_p.put(frame.copy())
 #         print("Video Processing q1: ", q1.qsize())
 
-def object_detection():
+def run_object_detection():
     detector = ObjectDetector()
 
     while True:
@@ -47,66 +47,71 @@ def object_detection():
             q2.put(np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3)))
         print("Object detection q2: ", q2.qsize())
 
-def start_api():
-    app.run(host="0.0.0.0", threaded=True)
 
 
-@app.route("/")
-def index():
-    """Video streaming home page."""
-    return render_template("index.html")
 
-class VideoCapture(cv2.VideoCapture):
-    def __init__(self, *args, **kwargs):
-        super(VideoCapture, self).__init__(*args, **kwargs)
-    
-    def __enter__(self):
-        return self
 
-    def __exit__(self):
-        self.release()
 
-def gen():
-    """Video streaming generator function."""
+def run_api():
+
+    class VideoCapture(cv2.VideoCapture):
+        def __init__(self, *args, **kwargs):
+            super(VideoCapture, self).__init__(*args, **kwargs)
+        
+        def __enter__(self):
+            return self
+
+        def __exit__(self):
+            self.release()
+
 
     with VideoCapture(0) as vc:
-        frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
-        
-        while True:
-            _, frame = vc.read()
-            frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
-            if frame is None:
-                print("Frame is of type NoneType, reset Raspberry...")
+        @app.route("/")
+        def index():
+            """Video streaming home page."""
+            return render_template("index.html")
 
-            q1.put(frame)
+        def gen():
+            """Video streaming generator function."""
 
-            if q2.qsize():
-                frame_mask = q2.get()
+            frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
+            
+            while True:
+                _, frame = vc.read()
+                frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
-            frame = frame + frame_mask
-            frame[frame > 255] = 255
+                if frame is None:
+                    print("Frame is of type NoneType, reset Raspberry...")
 
-            _, image_buffer = cv2.imencode(".jpg", frame)
-            io_buf = io.BytesIO(image_buffer)
+                q1.put(frame)
 
-            yield (
-                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
-            )
+                if q2.qsize():
+                    frame_mask = q2.get()
 
-@app.route("/video_feed")
-def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
+                frame = frame + frame_mask
+                frame[frame > 255] = 255
+
+                _, image_buffer = cv2.imencode(".jpg", frame)
+                io_buf = io.BytesIO(image_buffer)
+
+                yield (
+                    b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
+                )
+        @app.route("/video_feed")
+        def video_feed():
+            """Video streaming route. Put this in the src attribute of an img tag."""
+            return Response(gen(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+    app.run(host="0.0.0.0", threaded=True)
+
 
 
 if __name__ == "__main__":
     q1 = mp.Queue(1)
     q2 = mp.Queue(1)
 
-    # p1 = mp.Process(target=video_processing)
-    p2 = mp.Process(target=object_detection)
-    p3 = mp.Process(target=start_api)
-    # p1.start()
+    p2 = mp.Process(target=run_object_detection)
+    p3 = mp.Process(target=run_api)
     p2.start()
     p3.start()
