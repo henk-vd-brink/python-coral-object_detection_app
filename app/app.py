@@ -61,7 +61,7 @@ def gen():
     frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
     while True:
         frame = q1.get()
-        if not q2.qsize():
+        if q2.qsize():
             frame_mask = q2.get()
         frame = frame + frame_mask
 
