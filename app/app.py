@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import multiprocessing as mp
+from contextlib import contextmanager
 
 import cv2, io, traceback, time
 from flask import Flask, render_template, Response
@@ -55,10 +56,19 @@ def index():
     """Video streaming home page."""
     return render_template("index.html")
 
-vc = cv2.VideoCapture(0)
+@contextmanager
+def get_video_capture(*args, **kwargs):
+    vc = cv2.VideoCapture(0)
+    try:
+        yield vc
+    finally: 
+        vc.release()
+        print("Released video capture.")
 
 def gen():
     """Video streaming generator function."""
+
+    vc = get_video_capture()
     frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
     
     while True:
