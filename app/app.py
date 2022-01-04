@@ -4,7 +4,7 @@ import multiprocessing as mp
 import cv2, io, traceback, time
 from flask import Flask, render_template, Response
 from PIL import Image
-
+import numpy as np
 from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
@@ -42,7 +42,7 @@ def object_detection():
             print("----------------- 1 object detection -----------------")
             traceback.print_exc()
             print("----------------- 2 object detection -----------------")
-            q2.put(np.zeros())
+            q2.put(np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3)))
         print("Object detection q2: ", q2.qsize())
 
 def start_api():
@@ -57,12 +57,13 @@ def index():
 
 def gen():
     """Video streaming generator function."""
-
+    frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
     while True:
         frame = q1.get()
-        frame_mask = q2.get()
-
+        if not q2.qsize():
+            frame_mask = q2.get()
         frame = frame + frame_mask
+
         frame[frame > 255] = 255
 
         _, image_buffer = cv2.imencode(".jpg", frame)
