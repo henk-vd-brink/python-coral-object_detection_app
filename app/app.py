@@ -8,7 +8,7 @@ from PIL import Image
 import numpy as np
 from .detectors import BirdDetector, ObjectDetector
 
-VIDEO_SCREEN_SIZE = (320, 240)
+VIDEO_SCREEN_SIZE = (640, 480)
 
 def run_object_detection():
     detector = ObjectDetector()
