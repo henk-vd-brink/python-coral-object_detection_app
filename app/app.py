@@ -22,25 +22,25 @@ def video_processing():
         q1.put(frame)
         print("Video Processing q1: ", q1.qsize())
 
-# def object_detection():
-#     detector = ObjectDetector()
+def object_detection():
+    detector = ObjectDetector()
 
-#     while True:
-#         print("Object detection q1 start: ", q1.qsize())
-#         try:
+    while True:
+        print("Object detection q1 start: ", q1.qsize())
+        try:
             
-#             frame = q1.get()
-#             t1_start = time.perf_counter()
-#             frame = detector.detect(frame)
-#             print("Time to detect: ", time.perf_counter()-t1_start)
-#             q2.put(frame)
+            frame = q1.get()
+            t1_start = time.perf_counter()
+            frame = detector.detect(frame)
+            print("Time to detect: ", time.perf_counter()-t1_start)
+            q2.put(frame)
 
-#         except Exception:
-#             print("----------------- 1 object detection -----------------")
-#             traceback.print_exc()
-#             print("----------------- 2 object detection -----------------")
+        except Exception:
+            print("----------------- 1 object detection -----------------")
+            traceback.print_exc()
+            print("----------------- 2 object detection -----------------")
 
-#         print("Object detection q2: ", q2.qsize())
+        print("Object detection q2: ", q2.qsize())
 
 def start_api():
     app.run(host="0.0.0.0", threaded=True)
@@ -56,7 +56,8 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        frame = q1.get()
+        frame = q2.get()
+
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
@@ -76,8 +77,8 @@ if __name__ == "__main__":
     q2 = mp.Queue()
 
     p1 = mp.Process(target=video_processing)
-    # p2 = mp.Process(target=object_detection)
+    p2 = mp.Process(target=object_detection)
     p3 = mp.Process(target=start_api)
     p1.start()
-    # p2.start()
+    p2.start()
     p3.start()
