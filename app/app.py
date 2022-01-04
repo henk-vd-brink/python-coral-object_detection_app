@@ -9,12 +9,15 @@ from .detectors import BirdDetector, ObjectDetector
 
 app = Flask(__name__)
 
+VIDEO_SCREEN_SIZE = (480, 640)
+
 def video_processing():
     vc = cv2.VideoCapture(0)
 
     while True:
         time.sleep(0.1)
         _, frame = vc.read()
+        frame. cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
         if frame is None:
             print("Frame is of type NoneType, reset Raspberry")
@@ -39,7 +42,7 @@ def object_detection():
             print("----------------- 1 object detection -----------------")
             traceback.print_exc()
             print("----------------- 2 object detection -----------------")
-
+            q2.put(np.zeros())
         print("Object detection q2: ", q2.qsize())
 
 def start_api():
@@ -56,8 +59,11 @@ def gen():
     """Video streaming generator function."""
 
     while True:
-        frame = q2.get()
+        frame = q1.get()
+        frame_mask = q2.get()
 
+        frame = frame + frame_mask
+        frame[frame > 255] = 255
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
@@ -73,7 +79,7 @@ def video_feed():
 
 
 if __name__ == "__main__":
-    q1 = mp.Queue()
+    q1 = mp.Queue(10)
     q2 = mp.Queue()
 
     p1 = mp.Process(target=video_processing)
