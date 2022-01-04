@@ -19,7 +19,7 @@ RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
 RUN apt-get update
 
-RUN apt-get install libedgetpu1-max --assume-yes
+RUN apt-get install libedgetpu1-max --force-yes
 # RUN apt-get install python3-pycoral -y
 
 RUN apt-get update
