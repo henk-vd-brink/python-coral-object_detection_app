@@ -23,16 +23,17 @@ def video_processing():
             print("Frame is of type NoneType, reset Raspberry")
 
         q1.put(frame)
+        q1_p.put(frame)
         print("Video Processing q1: ", q1.qsize())
 
 def object_detection():
     detector = ObjectDetector()
 
     while True:
-        print("Object detection q1 start: ", q1.qsize())
+        print("Object detection q1 start: ", q1_p.qsize())
         try:
             
-            frame = q1.get()
+            frame = q1_p.get()
             t1_start = time.perf_counter()
             frame = detector.detect(frame)
             print("Time to detect: ", time.perf_counter()-t1_start)
@@ -82,6 +83,7 @@ def video_feed():
 if __name__ == "__main__":
     q1 = mp.Queue(2)
     q2 = mp.Queue(2)
+    q1_p = mp.Queue(1)
 
     p1 = mp.Process(target=video_processing)
     p2 = mp.Process(target=object_detection)
