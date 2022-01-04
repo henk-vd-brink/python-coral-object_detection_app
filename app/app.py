@@ -17,7 +17,7 @@ def video_processing():
     while True:
         time.sleep(0.1)
         _, frame = vc.read()
-        frame. cv2.resize(frame, VIDEO_SCREEN_SIZE)
+        frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
         if frame is None:
             print("Frame is of type NoneType, reset Raspberry")
