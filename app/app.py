@@ -23,7 +23,7 @@ def video_processing():
             print("Frame is of type NoneType, reset Raspberry")
 
         q1.put(frame)
-        q1_p.put(frame)
+        q1_p.put(frame.copy())
         print("Video Processing q1: ", q1.qsize())
 
 def object_detection():
