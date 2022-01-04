@@ -57,10 +57,10 @@ def index():
     return render_template("index.html")
 
 @contextmanager
-def get_video_capture(*args, **kwargs):
+def get_frame(*args, **kwargs):
     vc = cv2.VideoCapture(0)
     try:
-        yield vc
+        yield vc.read()
     finally: 
         vc.release()
         print("Released video capture.")
@@ -68,11 +68,10 @@ def get_video_capture(*args, **kwargs):
 def gen():
     """Video streaming generator function."""
 
-    vc = get_video_capture()
     frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
     
     while True:
-        _, frame = vc.read()
+        _, frame = get_frame()
         frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
         if frame is None:
