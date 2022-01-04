@@ -41,7 +41,7 @@ class ObjectDetector(BaseDetector):
         output_image = Image.fromarray(input_image).convert("RGB").resize(self._input_size, Image.ANTIALIAS)  
         return output_image
 
-    def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):    
+    def _postprocess(self, image, boxes, classes, scores, count, image_width, image_height):  
         for i in range(count):
             if scores[i] >= 0.4:
                 y_min, x_min, y_max, x_max = boxes[i]
@@ -54,6 +54,7 @@ class ObjectDetector(BaseDetector):
 
                 image = cv2.rectangle(image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1)
                 image = cv2.putText(image, self._label_list[class_id], (bb_x_min, bb_y_min+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+            print(image.shape)  
         return image
 
 
