@@ -8,31 +8,28 @@ from PIL import Image
 import numpy as np
 from .detectors import BirdDetector, ObjectDetector
 
-app = Flask(__name__)
-
 VIDEO_SCREEN_SIZE = (320, 240)
 
 def run_object_detection():
     detector = ObjectDetector()
 
     while True:
-        print("Object detection q1 start: ", q1.qsize())
         try:
             
             frame = q1.get()
             t1_start = time.perf_counter()
             frame = detector.detect(frame)
-            print("Time to detect: ", time.perf_counter()-t1_start)
+            print("Detection time: ", time.perf_counter()-t1_start)
             q2.put(frame)
 
         except Exception:
-            print("----------------- 1 object detection -----------------")
             traceback.print_exc()
-            print("----------------- 2 object detection -----------------")
             q2.put(np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3)))
+
         print("Object detection q2: ", q2.qsize())
 
 def run_api():
+    app = Flask(__name__)
 
     class VideoCapture(cv2.VideoCapture):
         def __init__(self, *args, **kwargs):
@@ -60,20 +57,25 @@ def run_api():
         frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
         
         while True:
+            t_0 = time.perf_counter()
             _, frame = vc.read()
             frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
+            print("Read time: ", time.perf_counter()-t_0)
 
             if frame is None:
-                print("Frame is of type NoneType, reset Raspberry...")
+                print("Frame is of type NoneType, -> error with /dev/usb0 -> reset Raspberry...")
 
             q1.put(frame)
+            print("Put time: ", time.perf_counter()-t_0)
 
             if q2.qsize():
                 frame_mask = q2.get()
 
+            print("Get frame_mask: ", time.perf_counter()-t_0)
+
             frame = frame + frame_mask
             frame[frame > 255] = 255
-
+            
             _, image_buffer = cv2.imencode(".jpg", frame)
             io_buf = io.BytesIO(image_buffer)
 
