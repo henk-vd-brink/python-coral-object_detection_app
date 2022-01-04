@@ -22,6 +22,7 @@ def gen():
 
     while True:
         _, frame = vc.read()
+        cv2.resize(frame, (320, 320, 3))
         print("in ", frame.shape)
         try:
             frame = detector.detect(frame)
