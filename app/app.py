@@ -22,13 +22,13 @@ def gen():
 
     while True:
         _, frame = vc.read()
-        frame = cv2.resize(frame, (320, 320))
-        print("in ", frame.shape)
-        try:
-            frame = detector.detect(frame)
-        except Exception:
-            print(traceback.format_exc())
-        print("out ", frame.shape)
+        # frame = cv2.resize(frame, (320, 320))
+        # print("in ", frame.shape)
+        # try:
+        #     frame = detector.detect(frame)
+        # except Exception:
+        #     print(traceback.format_exc())
+        # print("out ", frame.shape)
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
