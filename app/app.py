@@ -15,7 +15,7 @@ def video_processing():
     vc = cv2.VideoCapture(0)
 
     while True:
-        time.sleep(0.1)
+        time.sleep(0.33)
         _, frame = vc.read()
         frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
@@ -79,7 +79,7 @@ def video_feed():
 
 
 if __name__ == "__main__":
-    q1 = mp.Queue(10)
+    q1 = mp.Queue(2)
     q2 = mp.Queue()
 
     p1 = mp.Process(target=video_processing)
