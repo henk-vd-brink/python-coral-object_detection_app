@@ -89,8 +89,8 @@ def run_api():
 
 
 if __name__ == "__main__":
-    q1 = mp.Queue(1)
-    q2 = mp.Queue(1)
+    q1 = mp.Manager().Queue(1)
+    q2 = mp.Manager().Queue(1)
 
     p2 = mp.Process(target=run_object_detection)
     p3 = mp.Process(target=run_api)
