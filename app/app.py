@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-import cv2, io, traceback, time
+import cv2, io, traceback
 from flask import Flask, render_template, Response
-from PIL import Image
 
 from .detectors import BirdDetector, ObjectDetector
 
@@ -22,13 +21,11 @@ def gen():
 
     while True:
         _, frame = vc.read()
-        # frame = cv2.resize(frame, (320, 320))
-        # print("in ", frame.shape)
-        # try:
-        #     frame = detector.detect(frame)
-        # except Exception:
-        #     print(traceback.format_exc())
-        # print("out ", frame.shape)
+        frame = cv2.resize(frame, (320, 320))
+        try:
+            frame = detector.detect(frame)
+        except Exception:
+            print(traceback.format_exc())
 
         _, image_buffer = cv2.imencode(".jpg", frame)
         io_buf = io.BytesIO(image_buffer)
