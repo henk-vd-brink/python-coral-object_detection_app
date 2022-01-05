@@ -19,12 +19,9 @@ RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
 RUN apt-get update
 
-
-# RUN export DEBIAN_FRONTEND=noninteractive
-
 RUN echo "libedgetpu1-max libedgetpu/accepted-eula boolean true" | debconf-set-selections
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libedgetpu1-max
-# RUN apt-get install python3-pycoral -y
+
 
 RUN apt-get update
 
