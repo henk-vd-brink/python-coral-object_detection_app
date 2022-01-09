@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import multiprocessing as mp
-
 import cv2, io, traceback
 from flask import Flask, render_template, Response
 import numpy as np
