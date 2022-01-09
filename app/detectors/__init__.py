@@ -1,2 +1,2 @@
 from .bird_detector import BirdDetector
-from .object_detector import ObjectDetector
+from .efficient_det_lite0.py import EfficientDetLite0

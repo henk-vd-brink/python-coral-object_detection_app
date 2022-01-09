@@ -5,7 +5,7 @@ import numpy as np
 from pycoral.utils import edgetpu
 from PIL import Image
 
-class ObjectDetector(BaseDetector):
+class EfficientDetLite0(BaseDetector):
 
     _OUTPUT_LOCATION_NAME = 'location'
     _OUTPUT_CATEGORY_NAME = 'category'

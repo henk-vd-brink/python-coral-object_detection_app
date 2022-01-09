@@ -1,32 +1,27 @@
 #!/usr/bin/env python
 import multiprocessing as mp
-from contextlib import contextmanager
 
-import cv2, io, traceback, time
+import cv2, io, traceback
 from flask import Flask, render_template, Response
-from PIL import Image
 import numpy as np
-from .detectors import BirdDetector, ObjectDetector
+from .detectors import BirdDetector, EfficientDetLite0
+import logging
+
 
 VIDEO_SCREEN_SIZE = (640, 480)
 
 def run_object_detection():
-    detector = ObjectDetector()
+    detector = EfficientDetLite0()
 
     while True:
         try:
-            
             frame = q1.get()
-            t1_start = time.perf_counter()
             frame = detector.detect(frame)
-            print("Detection time: ", time.perf_counter()-t1_start)
             q2.put(frame)
 
         except Exception:
             traceback.print_exc()
             q2.put(np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3)))
-
-        print("Object detection q2: ", q2.qsize())
 
 def run_api():
     app = Flask(__name__)
@@ -57,23 +52,17 @@ def run_api():
         frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
         
         while True:
-            t_0 = time.perf_counter()
             _, frame = vc.read()
             frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
-            print("Read time: ", time.perf_counter()-t_0)
 
             if frame is None:
-                print("Frame is of type NoneType, -> error with /dev/usb0 -> reset Raspberry...")
+                logging.warning("Frame is of type NoneType, -> error with /dev/usb0 -> reset Raspberry...")
 
             if not q1.qsize():
                 q1.put(frame.copy())
 
-            print("Put time: ", time.perf_counter()-t_0)
-
             if q2.qsize():
                 frame_mask = q2.get()
-
-            print("Get frame_mask: ", time.perf_counter()-t_0)
 
             frame = frame + frame_mask
             frame[frame > 255] = 255
