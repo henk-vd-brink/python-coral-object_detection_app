@@ -12,7 +12,7 @@ class ObjectDetector(BaseDetector):
     _OUTPUT_SCORE_NAME = 'score'
     _OUTPUT_NUMBER_NAME = 'number of detections'
 
-    _model_file = "app/detectors/assets/models/lite-model_yolo-v5-tflite_tflite_model_1.tflite"
+    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite4_detection_default_2.tflite"
     _label_file = "app/detectors/assets/labels/ssd_mobilenet_v1_1_metadata_1_labels.txt"
 
     def __init__(self):
