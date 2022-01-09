@@ -41,7 +41,8 @@ class ObjectDetector(BaseDetector):
         output_image = Image.fromarray(input_image).convert("RGB").resize(self._input_size, Image.ANTIALIAS)  
         return output_image
 
-    def _postprocess(self, boxes, classes, scores, count, image_width, image_height):  
+    def _get_mask(self, boxes, classes, scores, count, image_width, image_height):  
+
         image = np.zeros((image_height, image_width, 3))
         for i in range(count):
             if scores[i] >= 0.4:
@@ -71,7 +72,7 @@ class ObjectDetector(BaseDetector):
         scores = self._get_output_tensor(self._OUTPUT_SCORE_NAME)
         count = int(self._get_output_tensor(self._OUTPUT_NUMBER_NAME))
 
-        return self._postprocess(boxes, classes, scores, count, image_width, image_height)
+        return self._get_mask(boxes, classes, scores, count, image_width, image_height)
 
     def _set_input_tensor(self, image):
         """Sets the input tensor."""
