@@ -4,11 +4,13 @@ import multiprocessing as mp
 import cv2, io, traceback
 from flask import Flask, render_template, Response
 import numpy as np
+
 from .detectors import BirdDetector, EfficientDetLite0
 import logging
 
 
 VIDEO_SCREEN_SIZE = (640, 480)
+
 
 def run_object_detection():
     detector = EfficientDetLite0()
@@ -23,13 +25,14 @@ def run_object_detection():
             traceback.print_exc()
             q2.put(np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3)))
 
+
 def run_api():
     app = Flask(__name__)
 
     class VideoCapture(cv2.VideoCapture):
         def __init__(self, *args, **kwargs):
             super(VideoCapture, self).__init__(*args, **kwargs)
-        
+
         def __enter__(self):
             return self
 
@@ -50,13 +53,15 @@ def run_api():
         """Video streaming generator function."""
 
         frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
-        
+
         while True:
             _, frame = vc.read()
             frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
 
             if frame is None:
-                logging.warning("Frame is of type NoneType, -> error with /dev/usb0 -> reset Raspberry...")
+                logging.warning(
+                    "Frame is of type NoneType, -> error with /dev/usb0 -> reset Raspberry..."
+                )
 
             if not q1.qsize():
                 q1.put(frame.copy())
@@ -71,12 +76,12 @@ def run_api():
             io_buf = io.BytesIO(image_buffer)
 
             yield (
-                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
+                b"--frame\r\n"
+                b"Content-Type: image/jpeg\r\n\r\n" + io_buf.read() + b"\r\n"
             )
 
     with VideoCapture(0) as vc:
         app.run(host="0.0.0.0", threaded=True)
-
 
 
 if __name__ == "__main__":
