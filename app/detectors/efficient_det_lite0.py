@@ -76,7 +76,7 @@ class EfficientDetLite0(BaseDetector):
                 )
                 image = cv2.putText(
                     image,
-                    scores[i],
+                    f"{scores[i]}",
                     (bb_x_max, bb_y_min + 10),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
