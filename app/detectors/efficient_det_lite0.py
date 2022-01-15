@@ -51,7 +51,7 @@ class EfficientDetLite0(BaseDetector):
 
         image = np.zeros((image_height, image_width, 3))
         for i in range(count):
-            if scores[i] >= 0.4:
+            if scores[i] >= 0.1:
                 y_min, x_min, y_max, x_max = boxes[i]
                 bb_x_min = round(x_min * image_width)
                 bb_x_max = round(x_max * image_width)
