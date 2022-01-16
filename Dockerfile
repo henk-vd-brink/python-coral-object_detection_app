@@ -35,6 +35,6 @@ RUN pip3 install -r requirements.txt
 RUN pip3 install cmake
 RUN pip3 install --extra-index-url https://google-coral.github.io/py-repo/ pycoral~=2.0
 
-COPY . .
+COPY app/ app/
 
 CMD ["python3", "-m", "app.app"]
