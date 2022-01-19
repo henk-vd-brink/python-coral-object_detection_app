@@ -13,7 +13,7 @@ class EfficientDetLite0(BaseDetector):
     _OUTPUT_SCORE_NAME = "score"
     _OUTPUT_NUMBER_NAME = "number of detections"
 
-    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite1_dice_detection_220119.tflite"
+    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite1_dice_detection_220119_150.tflite"
     _label_file = "app/detectors/assets/labels/lite-model_efficientdet_lite0_dice_detection_labels.txt"
 
     def __init__(self):
@@ -70,13 +70,13 @@ class EfficientDetLite0(BaseDetector):
                     (bb_x_min, bb_y_min + 10),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
-                    (255, 255, 255),
+                    (0,0, 255),
                     2,
                     cv2.LINE_AA
                 )
 
                 image = cv2.rectangle(
-                    image, (bb_x_min, bb_y_min + 10), (bb_x_max, bb_y_min), (255, 255, 255), -1
+                    image, (bb_x_min, bb_y_min + 10), (bb_x_min+10, bb_y_min), (255, 255, 255), -1
                 )
 
 
@@ -86,7 +86,7 @@ class EfficientDetLite0(BaseDetector):
                     (bb_x_max, bb_y_min + 10),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
-                    (255, 255, 255),
+                    (0,0, 255),
                     2,
                     cv2.LINE_AA
                 )
