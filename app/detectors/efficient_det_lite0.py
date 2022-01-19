@@ -66,24 +66,25 @@ class EfficientDetLite0(BaseDetector):
                 image = cv2.putText(
                     image,
                     self._label_list[class_id],
-                    # (bb_x_min, bb_y_min + 10),
+                    (bb_x_min, bb_y_min + 10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (255, 255, 255),
+                    2,
+                    cv2.LINE_AA,
+                    text_color_bg=(0, 0, 0)
+                )
+                image = cv2.putText(
+                    image,
+                    f"{round(100*scores[i])}",
                     (bb_x_max, bb_y_min + 10),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
-                    (0, 0, 255),
+                    (255, 255, 255),
                     2,
                     cv2.LINE_AA,
+                    text_color_bg=(0, 0, 0)
                 )
-                # image = cv2.putText(
-                #     image,
-                #     f"{round(100*scores[i])}",
-                #     (bb_x_max, bb_y_min + 10),
-                #     cv2.FONT_HERSHEY_SIMPLEX,
-                #     0.5,
-                #     (0, 0, 255),
-                #     2,
-                #     cv2.LINE_AA,
-                # )
         return image
 
     def detect(self, image):
