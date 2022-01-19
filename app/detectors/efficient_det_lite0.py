@@ -47,23 +47,6 @@ class EfficientDetLite0(BaseDetector):
         )
         return output_image
 
-    def _draw_text(img, text,
-          font=cv2.FONT_HERSHEY_PLAIN,
-          pos=(0, 0),
-          font_scale=3,
-          font_thickness=2,
-          text_color=(0, 255, 0),
-          text_color_bg=(0, 0, 0)
-          ):
-
-        x, y = pos
-        text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
-        text_w, text_h = text_size
-        cv2.rectangle(img, pos, (x + text_w, y + text_h), text_color_bg, -1)
-        cv2.putText(img, text, (x, y + text_h + font_scale - 1), font, font_scale, text_color, font_thickness)
-
-        return img
-
     def _get_mask(self, boxes, classes, scores, count, image_width, image_height):
 
         image = np.zeros((image_height, image_width, 3))
@@ -76,33 +59,39 @@ class EfficientDetLite0(BaseDetector):
                 bb_y_max = round(y_max * image_height)
 
                 class_id = int(classes[i] + 1)
-                image = self._draw_text(image, str(self._label_list[class_id]), (bb_x_min, bb_y_min + 10))
+                
                 image = cv2.rectangle(
                     image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1
                 )
 
-                # image = cv2.putText(
-                #     image,
-                #     self._label_list[class_id],
-                #     (bb_x_min, bb_y_min + 10),
-                #     cv2.FONT_HERSHEY_SIMPLEX,
-                #     0.5,
-                #     (255, 255, 255),
-                #     2,
-                #     cv2.LINE_AA,
-                #     text_color_bg=(0, 0, 0)
-                # )
-                # image = cv2.putText(
-                #     image,
-                #     f"{round(100*scores[i])}",
-                #     (bb_x_max, bb_y_min + 10),
-                #     cv2.FONT_HERSHEY_SIMPLEX,
-                #     0.5,
-                #     (255, 255, 255),
-                #     2,
-                #     cv2.LINE_AA,
-                #     text_color_bg=(0, 0, 0)
-                # )
+                image = cv2.putText(
+                    image,
+                    self._label_list[class_id],
+                    (bb_x_min, bb_y_min + 10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (255, 255, 255),
+                    2,
+                    cv2.LINE_AA,
+                    text_color_bg=(0, 0, 0)
+                )
+
+                image = cv2.rectangle(
+                    image, (bb_x_min, bb_y_min + 10), (bb_x_max, bb_y_min), (255, 255, 255), -1
+                )
+
+
+                image = cv2.putText(
+                    image,
+                    f"{round(100*scores[i])}",
+                    (bb_x_max, bb_y_min + 10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (255, 255, 255),
+                    2,
+                    cv2.LINE_AA,
+                    text_color_bg=(0, 0, 0)
+                )
         return image
 
     def detect(self, image):
