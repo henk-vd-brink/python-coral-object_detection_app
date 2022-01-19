@@ -47,6 +47,13 @@ class EfficientDetLite0(BaseDetector):
         )
         return output_image
 
+    def _draw_text(image, position, text, font=cv2.FONT_HERSHEY_PLAIN, font_scale=3, font_thickness=2, text_color=(255, 255, 255), text_color_bg=(0, 0, 0)):
+        x, y = position
+        text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
+        text_width, text_height = text_size
+        cv2.rectangle(image, position, (x + text_width, y + text_height), text_color_bg, -1)
+        cv2.putText(image, text, (x, y + text_height + font_scale - 1), font, font_scale, text_color, font_thickness)
+
     def _get_mask(self, boxes, classes, scores, count, image_width, image_height):
 
         image = np.zeros((image_height, image_width, 3))
@@ -61,35 +68,10 @@ class EfficientDetLite0(BaseDetector):
                 class_id = int(classes[i] + 1)
 
                 image = cv2.rectangle(
-                    image, (bb_x_min, bb_y_min + 10), (bb_x_min+10, bb_y_min), (255, 255, 255), -1
-                )
-
-                
-                image = cv2.rectangle(
                     image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1
                 )
 
-                image = cv2.putText(
-                    image,
-                    self._label_list[class_id],
-                    (bb_x_min, bb_y_min + 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.5,
-                    (0,0, 255),
-                    2,
-                    cv2.LINE_AA
-                )
-
-                image = cv2.putText(
-                    image,
-                    f"{round(100*scores[i])}",
-                    (bb_x_max, bb_y_min + 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.5,
-                    (0,0, 255),
-                    2,
-                    cv2.LINE_AA
-                )
+                image = self._draw_text(image, (bb_x_min, bb_y_min+10), self._label_list[class_id])
         return image
 
     def detect(self, image):
