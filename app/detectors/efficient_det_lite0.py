@@ -71,7 +71,8 @@ class EfficientDetLite0(BaseDetector):
                     image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1
                 )
 
-                image = self._draw_text(image, (bb_x_min, bb_y_min+10), self._label_list[class_id])
+                class_label_position=(bb_x_min, bb_y_min+10)
+                image = self._draw_text(image, class_label_position, self._label_list[class_id])
         return image
 
     def detect(self, image):
