@@ -47,7 +47,7 @@ class EfficientDetLite0(BaseDetector):
         )
         return output_image
 
-    def _draw_text(self, image, position, text, font=cv2.FONT_HERSHEY_PLAIN, font_scale=1, font_thickness=2, text_color=(0,0, 255), text_color_bg=(255, 255, 255)):
+    def _draw_text(self, image, position, text, font=cv2.FONT_HERSHEY_PLAIN, font_scale=1, font_thickness=1, text_color=(0,0, 0), text_color_bg=(255, 255, 255)):
         x, y = position
         text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
         text_width, text_height = text_size
