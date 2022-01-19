@@ -72,8 +72,7 @@ class EfficientDetLite0(BaseDetector):
                     0.5,
                     (255, 255, 255),
                     2,
-                    cv2.LINE_AA,
-                    text_color_bg=(0, 0, 0)
+                    cv2.LINE_AA
                 )
 
                 image = cv2.rectangle(
@@ -89,8 +88,7 @@ class EfficientDetLite0(BaseDetector):
                     0.5,
                     (255, 255, 255),
                     2,
-                    cv2.LINE_AA,
-                    text_color_bg=(0, 0, 0)
+                    cv2.LINE_AA
                 )
         return image
 
