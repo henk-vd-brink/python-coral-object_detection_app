@@ -76,7 +76,7 @@ class EfficientDetLite0(BaseDetector):
                 bb_y_max = round(y_max * image_height)
 
                 class_id = int(classes[i] + 1)
-                image = self._draw_text(image, self._label_list[class_id], (bb_x_min, bb_y_min + 10))
+                image = self._draw_text(image, str(self._label_list[class_id]), (bb_x_min, bb_y_min + 10))
                 image = cv2.rectangle(
                     image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1
                 )
