@@ -13,7 +13,7 @@ class EfficientDetLite0(BaseDetector):
     _OUTPUT_SCORE_NAME = "score"
     _OUTPUT_NUMBER_NAME = "number of detections"
 
-    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite1_dice_detection_220120_150.tflite"
+    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite0_dice_detection_2.tflite"
     _label_file = "app/detectors/assets/labels/lite-model_efficientdet_lite0_dice_detection_labels.txt"
 
     def __init__(self):
