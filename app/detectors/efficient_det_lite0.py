@@ -71,7 +71,7 @@ class EfficientDetLite0(BaseDetector):
             class_id = int(classes[i] + 1)
 
             image = cv2.rectangle(
-                image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 3
+                image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (1, 1, 255), 3
             )
 
             class_label_position=(bb_x_min, bb_y_min)

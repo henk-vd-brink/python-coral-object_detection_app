@@ -74,7 +74,7 @@ def run_api():
 
             # frame = frame + frame_mask
             # frame[frame > 255] = 255
-            frame[frame_mask_bool] = 255
+            frame[frame_mask_bool] = frame_mask[frame_mask_bool]
 
             _, image_buffer = cv2.imencode(".jpg", frame)
             io_buf = io.BytesIO(image_buffer)
