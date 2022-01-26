@@ -52,7 +52,7 @@ class EfficientDetLite0(BaseDetector):
         text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
         text_width, text_height = text_size
         # cv2.rectangle(image, position, (x + text_width, y - text_height), text_color_bg, -1)
-        cv2.putText(image, text, (x, y-1), font, font_scale, text_color, font_thickness)
+        cv2.putText(image, text, (x, y-font_scale-1), font, font_scale, text_color, font_thickness)
         return image
 
     def _get_mask(self, boxes, classes, scores, count, image_width, image_height):
