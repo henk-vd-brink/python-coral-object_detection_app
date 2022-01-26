@@ -10,8 +10,8 @@ from .detectors import BirdDetector, EfficientDetLite0
 import logging
 
 
-VIDEO_SCREEN_SIZE = (640, 480)
-
+# VIDEO_SCREEN_SIZE = (640, 480)
+VIDEO_SCREEN_SIZE = (1920, 1080)
 
 def run_object_detection():
     detector = EfficientDetLite0()
@@ -71,9 +71,6 @@ def run_api():
                 frame_mask = q2.get()
 
             frame_mask_bool = frame_mask != 0
-
-            # frame = frame + frame_mask
-            # frame[frame > 255] = 255
             frame[frame_mask_bool] = frame_mask[frame_mask_bool]
 
             _, image_buffer = cv2.imencode(".jpg", frame)
