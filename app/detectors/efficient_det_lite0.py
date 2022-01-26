@@ -56,7 +56,7 @@ class EfficientDetLite0(BaseDetector):
         return image
 
     def _get_mask(self, boxes, classes, scores, count, image_width, image_height):
-        image = np.zeros((image_height, image_width, 1))
+        image = np.zeros((image_height, image_width))
 
         for i in range(count):
             if not (scores[i] >= 0.20):
