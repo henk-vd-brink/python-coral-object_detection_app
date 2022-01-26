@@ -71,8 +71,8 @@ def run_api():
             if q2.qsize():
                 frame_mask = q2.get()
 
-            frame[0, ~frame_mask[:,:,0]] = 255
-            frame[1:2, ~frame_mask[:,:,0]] = 0
+            frame[ ~frame_mask[:,:,0],0] = 255
+            frame[ ~frame_mask[:,:,0], 1:2] = 0
             # frame = frame + frame_mask
             # frame[frame > 255] = 255
 
