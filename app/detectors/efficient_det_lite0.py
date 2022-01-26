@@ -51,7 +51,7 @@ class EfficientDetLite0(BaseDetector):
         x, y = position
         text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
         text_width, text_height = text_size
-        cv2.rectangle(image, position, (x + text_width, y - text_height), text_color_bg, -1)
+        # cv2.rectangle(image, position, (x + text_width, y - text_height), text_color_bg, -1)
         cv2.putText(image, text, (x, y - ( text_height + font_scale - 1)), font, font_scale, text_color, font_thickness)
         return image
 
@@ -71,7 +71,7 @@ class EfficientDetLite0(BaseDetector):
             class_id = int(classes[i] + 1)
 
             image = cv2.rectangle(
-                image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1
+                image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 3
             )
 
             class_label_position=(bb_x_min, bb_y_min)
