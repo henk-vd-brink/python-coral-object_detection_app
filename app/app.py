@@ -11,7 +11,7 @@ import logging
 
 
 # VIDEO_SCREEN_SIZE = (640, 480)
-VIDEO_SCREEN_SIZE = (1920, 1080)
+VIDEO_SCREEN_SIZE = (1280, 720)
 
 def run_object_detection():
     detector = EfficientDetLite0()
