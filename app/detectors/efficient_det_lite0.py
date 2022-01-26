@@ -13,7 +13,7 @@ class EfficientDetLite0(BaseDetector):
     _OUTPUT_SCORE_NAME = "score"
     _OUTPUT_NUMBER_NAME = "number of detections"
 
-    _model_file = "app/detectors/assets/models/500_epochs_self_annotated.tflite"
+    _model_file = "app/detectors/assets/models/500_epochs_self_annotated_2.tflite"
     _label_file = "app/detectors/assets/labels/lite-model_efficientdet_lite0_dice_detection_labels.txt"
 
     def __init__(self):
@@ -56,24 +56,26 @@ class EfficientDetLite0(BaseDetector):
         return image
 
     def _get_mask(self, boxes, classes, scores, count, image_width, image_height):
-
         image = np.zeros((image_height, image_width, 3))
+
         for i in range(count):
-            if scores[i] >= 0.20:
-                y_min, x_min, y_max, x_max = boxes[i]
-                bb_x_min = round(x_min * image_width)
-                bb_x_max = round(x_max * image_width)
-                bb_y_min = round(y_min * image_height)
-                bb_y_max = round(y_max * image_height)
+            if not (scores[i] >= 0.20):
+                continue
 
-                class_id = int(classes[i] + 1)
+            y_min, x_min, y_max, x_max = boxes[i]
+            bb_x_min = round(x_min * image_width)
+            bb_x_max = round(x_max * image_width)
+            bb_y_min = round(y_min * image_height)
+            bb_y_max = round(y_max * image_height)
 
-                image = cv2.rectangle(
-                    image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1
-                )
+            class_id = int(classes[i] + 1)
 
-                class_label_position=(bb_x_min, bb_y_min)
-                image = self._draw_text(image, class_label_position, self._label_list[class_id])
+            image = cv2.rectangle(
+                image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (0, 0, 255), 1
+            )
+
+            class_label_position=(bb_x_min, bb_y_min)
+            image = self._draw_text(image, class_label_position, self._label_list[class_id])      
         return image
 
     def detect(self, image):
