@@ -54,7 +54,8 @@ def run_api():
         """Video streaming generator function."""
 
         # frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
-
+        frame_mask = np.zeros((VIDEO_SCREEN_SIZE[1], VIDEO_SCREEN_SIZE[0], 3))
+        frame_mask = frame_mask > 0
         while True:
             _, frame = vc.read()
             frame = cv2.resize(frame, VIDEO_SCREEN_SIZE)
@@ -69,9 +70,8 @@ def run_api():
 
             if q2.qsize():
                 frame_mask = q2.get()
-                frame[frame_mask] = 255
 
-
+            frame[frame_mask] = 255
             # frame = frame + frame_mask
             # frame[frame > 255] = 255
 
