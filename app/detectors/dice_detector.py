@@ -196,7 +196,7 @@ class DiceDetector(BaseDetector):
         )
 
         mask_2 = self._get_fe_mask((image_height, image_width), classes, self._img_dict)
-        return mask_2
+        return mask_1 + mask_2
 
     def _set_input_tensor(self, image):
         """Sets the input tensor."""
