@@ -75,7 +75,7 @@ class DiceDetector(BaseDetector):
         font=cv2.FONT_HERSHEY_PLAIN,
         font_scale=2,
         font_thickness=2,
-        text_color=(254, 254, 254),
+        text_color=(1, 1, 255),
     ):
         x, y = position
         cv2.putText(
@@ -138,7 +138,7 @@ class DiceDetector(BaseDetector):
         font = cv2.FONT_HERSHEY_DUPLEX
         bottomLeftCornerOfText = (0, 49)
         fontScale = 1
-        fontColor = (255, 255, 255)
+        fontColor = (254, 254, 254)
         thickness = 2
         lineType = 1
 
