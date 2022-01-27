@@ -143,7 +143,7 @@ class DiceDetector(BaseDetector):
         lineType = 1
 
         if sum_classes < 10:
-            bottomLeftCornerOfText = (20, 44)
+            bottomLeftCornerOfText = (10, 44)
 
         cv2.putText(
             img,
