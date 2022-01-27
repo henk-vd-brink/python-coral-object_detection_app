@@ -90,6 +90,22 @@ class DiceDetector(BaseDetector):
         )
         return image
 
+    def _update_detection(self, boxes, classes, scores, count):
+        updated_boxes = []
+        updated_classes = []
+        updated_scores = []
+        updated_count = 0
+
+        for i in range(count):
+            if not (scores[i] >= 0.20):
+                continue
+            updated_boxes[i] = boxes[i]
+            updated_classes[i] = classes[i]
+            updated_scores[i] = scores[i]
+        updated_count = len(updated_boxes)
+
+        return updated_boxes, updated_classes, updated_scores, updated_count
+
     def _get_mask(self, boxes, classes, scores, count, image_width, image_height):
         image = np.zeros((image_height, image_width, 3))
 
@@ -195,6 +211,9 @@ class DiceDetector(BaseDetector):
         scores = self._get_output_tensor(self._OUTPUT_SCORE_NAME)
         count = int(self._get_output_tensor(self._OUTPUT_NUMBER_NAME))
 
+        boxes, classes, scores, count = self._update_detection(
+            boxes, classes, scores, count
+        )
         mask_1 = self._get_mask(
             boxes, classes, scores, count, image_width, image_height
         )
