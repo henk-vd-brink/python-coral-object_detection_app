@@ -99,9 +99,9 @@ class DiceDetector(BaseDetector):
         for i in range(count):
             if not (scores[i] >= 0.20):
                 continue
-            updated_boxes[i] = boxes[i]
-            updated_classes[i] = classes[i]
-            updated_scores[i] = scores[i]
+            updated_boxes.append(boxes[i])
+            updated_classes.append(classes[i])
+            updated_scores.append(scores[i])
         updated_count = len(updated_boxes)
 
         return updated_boxes, updated_classes, updated_scores, updated_count
