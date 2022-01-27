@@ -136,7 +136,7 @@ class DiceDetector(BaseDetector):
         img = img_dict["empty_sum"].copy()
 
         font = cv2.FONT_HERSHEY_DUPLEX
-        bottomLeftCornerOfText = (0, 49)
+        bottomLeftCornerOfText = (5, 44)
         fontScale = 1
         fontColor = (254, 254, 254)
         thickness = 2
