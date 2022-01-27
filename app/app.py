@@ -6,15 +6,15 @@ import cv2, io, traceback
 from flask import Flask, render_template, Response
 import numpy as np
 
-from .detectors import BirdDetector, EfficientDetLite0
+from .detectors import DiceDetector
 import logging
 
 
-# VIDEO_SCREEN_SIZE = (640, 480)
-VIDEO_SCREEN_SIZE = (1280, 720)
+VIDEO_SCREEN_SIZE = (640, 480)
+
 
 def run_object_detection():
-    detector = EfficientDetLite0()
+    detector = DiceDetector()
 
     while True:
         try:
