@@ -159,13 +159,13 @@ class DiceDetector(BaseDetector):
         img_dict = self._update_sum_img_dict(img_dict, classes)
         full_classes = self._fill_empty_classes(classes)
 
-        mask = np.ones((img_resolution[0], img_resolution[1], 3), dtype=np.uint8)
+        mask = 255 * np.ones((img_resolution[0], img_resolution[1], 3), dtype=np.uint8)
         mask = self._update_mask(mask, full_classes, img_dict)
-        mask = np.ones(mask.shape) - mask
+        mask = 255 * np.ones(mask.shape) - mask
 
-        # red_mask = 1e-3 * np.ones(mask.shape)
+        red_mask = 1e-3 * np.ones(mask.shape)
         # red_mask[:, :, 0] = np.ones((mask.shape[0], mask.shape[1]))
-        # mask = mask * red_mask
+        mask = mask * red_mask
         return mask
 
     def _update_mask(self, mask, classes, img_dict, n_squares=6):
