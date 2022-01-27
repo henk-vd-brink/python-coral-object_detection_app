@@ -57,7 +57,7 @@ class DiceDetector(BaseDetector):
             dict_name = image_name.rsplit(".", 1)[0]
 
             img_matrices_dict[dict_name] = image_matrix
-        self.img_matrices_dict = img_matrices_dict
+        self._img_dict = img_matrices_dict
 
     def _preprocess(self, input_image):
         output_image = (
