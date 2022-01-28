@@ -13,8 +13,8 @@ class EfficientDetLite0(BaseDetector):
     _OUTPUT_SCORE_NAME = "score"
     _OUTPUT_NUMBER_NAME = "number of detections"
 
-    _model_file = "app/detectors/assets/models/350_epochs_self_annotated_2.tflite"
-    _label_file = "app/detectors/assets/labels/lite-model_efficientdet_lite0_dice_detection_labels.txt"
+    _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite0_detection_metadata_1.tflite"
+    _label_file = "app/detectors/assets/labels/ssd_mobilenet_v1_1_metadata_1_labels.txt"
 
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)
@@ -47,12 +47,30 @@ class EfficientDetLite0(BaseDetector):
         )
         return output_image
 
-    def _draw_text(self, image, position, text, font=cv2.FONT_HERSHEY_PLAIN, font_scale=2, font_thickness=2, text_color=(1,1,255), text_color_bg=(255,255,255)):
+    def _draw_text(
+        self,
+        image,
+        position,
+        text,
+        font=cv2.FONT_HERSHEY_PLAIN,
+        font_scale=2,
+        font_thickness=2,
+        text_color=(1, 1, 255),
+        text_color_bg=(255, 255, 255),
+    ):
         x, y = position
         text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
         text_width, text_height = text_size
         # cv2.rectangle(image, position, (x + text_width, y - text_height), text_color_bg, -1)
-        cv2.putText(image, text, (x, y-font_scale-1), font, font_scale, text_color, font_thickness)
+        cv2.putText(
+            image,
+            text,
+            (x, y - font_scale - 1),
+            font,
+            font_scale,
+            text_color,
+            font_thickness,
+        )
         return image
 
     def _get_mask(self, boxes, classes, scores, count, image_width, image_height):
@@ -74,8 +92,10 @@ class EfficientDetLite0(BaseDetector):
                 image, (bb_x_min, bb_y_min), (bb_x_max, bb_y_max), (1, 1, 255), 3
             )
 
-            class_label_position=(bb_x_min, bb_y_min)
-            image = self._draw_text(image, class_label_position, self._label_list[class_id])    
+            class_label_position = (bb_x_min, bb_y_min)
+            image = self._draw_text(
+                image, class_label_position, self._label_list[class_id]
+            )
         return image
 
     def detect(self, image):

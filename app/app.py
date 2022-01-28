@@ -6,7 +6,7 @@ import cv2, io, traceback
 from flask import Flask, render_template, Response
 import numpy as np
 
-from .detectors import DiceDetector
+from .detectors import EfficientDetLite0 as Detector
 import logging
 
 
@@ -14,7 +14,7 @@ VIDEO_SCREEN_SIZE = (640, 480)
 
 
 def run_object_detection():
-    detector = DiceDetector()
+    detector = Detector()
 
     while True:
         try:
