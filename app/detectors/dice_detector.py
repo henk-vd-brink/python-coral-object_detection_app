@@ -14,6 +14,7 @@ class DiceDetector(EfficientDetLite0):
 
     def __init__(self):
         super().__init__()
+        self._set_img_matrices_dict()
 
     def _set_img_matrices_dict(self):
         image_list = os.listdir(self.INTERFACE_FOLDER_URI)
