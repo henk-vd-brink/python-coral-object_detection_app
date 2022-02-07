@@ -56,12 +56,8 @@ class EfficientDetLite0(BaseDetector):
         font_scale=2,
         font_thickness=2,
         text_color=(1, 1, 255),
-        text_color_bg=(255, 255, 255),
     ):
         x, y = position
-        text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
-        text_width, text_height = text_size
-        # cv2.rectangle(image, position, (x + text_width, y - text_height), text_color_bg, -1)
         cv2.putText(
             image,
             text,
