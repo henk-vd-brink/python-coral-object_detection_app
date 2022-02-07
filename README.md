@@ -1,6 +1,8 @@
 ## About the Project
 This project contains a containerized machine learning module that runs on the Google Coral USB Accelerator https://coral.ai/products/accelerator/ in conjunction with a Raspberry Pi 4 (8GB). The video input is obtained using a USB camera. 
 
+The model is capable of running any tflite model smaller than 8MB inside the USB Accerlerator's memory. In th example underneath a trained dice detection model is implemented in conjunction with a small interface which tells you what dice are detected.
+
 ## Getting Started
 To run this instantly, make sure that the Coral USB Accelerator and USB camera are connected to the USB ports on the Raspberry Pi. For the best performance I would recommend using the USB 3.0 ports.
 
