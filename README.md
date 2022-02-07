@@ -1,5 +1,5 @@
 ## About the Project
-This project contains a containerized machine learning module that runs on the Google Coral USB Accelerator https://coral.ai/products/accelerator/ in conjunction with a Raspberry Pi 4 (8GB). The video input is obtained using a USB camera. The software is capable of running any tflite model smaller than 8MB inside the USB Accerlerator's memory.
+This project contains a containerized machine learning module that runs on the Google Coral USB Accelerator https://coral.ai/products/accelerator/ in conjunction with a Raspberry Pi 4 (8GB). The video input is obtained using a USB camera. The software is capable of running any tflite model smaller than 8MB inside the USB Accelerator's memory.
 
 Additionally, it is worth mentioning that the software runs on multiple CPU cores to optimise performance. One core is dedicated to the video stream, the other is fully dedicated to detecting.
 
