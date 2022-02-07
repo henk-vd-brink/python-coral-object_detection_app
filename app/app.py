@@ -6,7 +6,7 @@ import cv2, io, traceback
 from flask import Flask, render_template, Response
 import numpy as np
 
-from .detectors import EfficientDetLite0 as Detector
+from .detectors import DiceDetector as Detector
 import logging
 
 
