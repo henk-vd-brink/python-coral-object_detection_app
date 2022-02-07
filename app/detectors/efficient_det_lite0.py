@@ -14,7 +14,7 @@ class EfficientDetLite0(BaseDetector):
     _OUTPUT_NUMBER_NAME = "number of detections"
 
     _model_file = "app/detectors/assets/models/lite-model_efficientdet_lite0_detection_metadata_1.tflite"
-    _label_file = "app/detectors/assets/labels/ssd_mobilenet_v1_1_metadata_1_labels.txt"
+    _label_file = "app/detectors/assets/labels/lite-model_efficientdet_lite0_coco_dataset_labels.txt"
 
     def __init__(self):
         self._interpreter = edgetpu.make_interpreter(self._model_file)

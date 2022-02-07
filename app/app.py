@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 
+__author__ = "Henk van den Brink"
+__url__ = "https://github.com/henk-vd-brink"
+
+
 import multiprocessing as mp
 
-import cv2, io, traceback
+import cv2, io, traceback, logging, os
 from flask import Flask, render_template, Response
 import numpy as np
 
-from .detectors import DiceDetector as Detector
-import logging
+if os.environ.get("DETECTOR") == "DICE":
+    from .detectors import DiceDetector as Detector
+else:
+    from .detectors import EfficientDetLite0 as Detector
 
 
 VIDEO_SCREEN_SIZE = (640, 480)

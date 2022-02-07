@@ -37,4 +37,6 @@ RUN pip3 install --extra-index-url https://google-coral.github.io/py-repo/ pycor
 
 COPY app/ app/
 
+ENV DETECTOR=DICE
+
 CMD ["python3", "-m", "app.app"]
