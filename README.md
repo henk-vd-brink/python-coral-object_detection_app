@@ -4,7 +4,7 @@ This project contains a containerized machine learning module that runs on the G
 Additionally, it is worth mentioning that the software runs on multiple CPU cores to optimise performance. One core is dedicated to the video stream, the other is fully dedicated to detecting.
 
 ## Getting Started
-To run this instantly, make sure that the Coral USB Accelerator and USB camera are connected to the USB ports on the Raspberry Pi. For the best performance I would recommend using the USB 3.0 ports.
+All the dependencies are installed in the Docker image. To run the container make sure that the Coral USB Accelerator and USB camera are connected to the USB ports on the Raspberry Pi. For the best performance I would recommend using the USB 3.0 ports.
 
 ### Prerequisites
 - Docker
